@@ -23,63 +23,63 @@ document.addEventListener('DOMContentLoaded', () => {
     const finalScoreDisplay = document.getElementById('final-score');
     const highScoresList = document.getElementById('high-scores-list');
 
-    // 시작 화면 강제 표시
+    // 상태 변수
+    let gridSize = 3;             // 게임 모드(3x3, 4x4, 5x5)
+    let timeLimit = 40;           // 시간제한
+    let heartCount = 2;           // 하트 개수
+    let numberRangeStart = 1;     // 숫자 범위 시작
+    let numberRangeEnd = 50;      // 숫자 범위 끝
+    let timer;                    // 타이머
+    let currentTime;              // 현재 시간
+    let currentScore = 0;         // 현재 점수
+    let currentStage = 1;         // 현재 스테이지
+    let heartsRemaining = 2;      // 남은 하트수
+    let numbersArray = [];        // 게임판에 표시될 숫자들
+    let primeCheckMap = {};       // 소수 체크 맵
+    let clickedNumbers = new Set(); // 클릭된 숫자들
+
+    // 시작화면 강제 표시
     startScreen.style.display = 'flex';
     startScreen.classList.add('active');
 
-    // 상태 변수
-    let gridSize = 3;            // 게임 모드(3x3, 4x4, 5x5)
-    let timeLimit = 40;          // 시간제한
-    let heartCount = 2;          // 하트 개수
-    let numberRangeStart = 1;    // 숫자 범위 시작
-    let numberRangeEnd = 50;     // 숫자 범위 끝
-    let timer;                   // 타이머
-    let currentTime;             // 현재 시간
-    let currentScore = 0;        // 현재 점수
-    let currentStage = 1;        // 현재 스테이지
-    let heartsRemaining = 2;     // 남은 하트수
-    let numbersArray = [];       // 게임판에 표시될 숫자들
-    let primeCheckMap = {};      // 소수 체크 맵
-    let clickedNumbers = new Set();  // 클릭된 숫자들
-
     // 시작화면 -> 설정화면
-startButton.addEventListener('click', () => {
-    document.querySelector('.screen.active').classList.remove('active');
-    settingsScreen.classList.add('active');
-});
+    startButton.addEventListener('click', () => {
+        startScreen.classList.remove('active');
+        settingsScreen.classList.add('active');
+    });
 
-// 설정화면 -> 게임화면
-startGameButton.addEventListener('click', () => {
-    if (!validateInputs()) return;
+    // 설정화면 -> 게임화면
+    startGameButton.addEventListener('click', () => {
+        if (!validateInputs()) return;
 
-    // 게임 설정 저장
-    gridSize = parseInt(gameModeSelect.value);
-    timeLimit = parseInt(timeLimitSelect.value);
-    heartCount = parseInt(heartCountSelect.value);
-    numberRangeStart = parseInt(rangeStartInput.value);
-    numberRangeEnd = parseInt(rangeEndInput.value);
+        // 게임 설정 저장
+        gridSize = parseInt(gameModeSelect.value);
+        timeLimit = parseInt(timeLimitSelect.value);
+        heartCount = parseInt(heartCountSelect.value);
+        numberRangeStart = parseInt(rangeStartInput.value);
+        numberRangeEnd = parseInt(rangeEndInput.value);
 
-    document.querySelector('.screen.active').classList.remove('active');
-    gameScreen.classList.add('active');
-    initGame();
-});
+        initGame();
+        settingsScreen.classList.remove('active');
+        gameScreen.classList.add('active');
+    });
 
-// 게임 오버화면 -> 설정화면
-restartButton.addEventListener('click', () => {
-    document.querySelector('.screen.active').classList.remove('active');
-    settingsScreen.classList.add('active');
-    stopTimer();
-});
+    // 게임오버 -> 설정화면
+    restartButton.addEventListener('click', () => {
+        gameoverScreen.classList.remove('active');
+        settingsScreen.classList.add('active');
+        stopTimer();
+    });
 
     // 더이상 소수없음 버튼 클릭
     noMorePrimesBtn.addEventListener('click', () => {
-        if (!hasPrimeInBoard()) {    // 소수가 없으면
-            currentScore += 30;       // 30점 추가
+        if (!hasPrimeInBoard()) {   // 소수가 없으면
+            currentScore += 30;      // 30점 추가
             scoreDisplay.textContent = currentScore;
-            currentStage++;          // 스테이지 증가
-            resetBoard();           // 보드 재설정
+            currentStage++;         // 스테이지 증가
+            resetBoard();          // 보드 재설정
         } else {
-            loseHeart();           // 하트 감소
+            loseHeart();          // 하트 감소
         }
         resetTimer();
     });
@@ -117,9 +117,6 @@ restartButton.addEventListener('click', () => {
         generateNumbersArray();
         createBoard();
         startTimer();
-
-        settingsScreen.classList.remove('active');
-        gameScreen.classList.add('active');
     }
 
     // 하트 초기화
@@ -150,7 +147,6 @@ restartButton.addEventListener('click', () => {
         shuffleArray(candidates);
         numbersArray = candidates.slice(0, gridSize * gridSize);
 
-        // 소수 판별 미리 계산
         numbersArray.forEach(num => {
             primeCheckMap[num] = isPrime(num);
         });
@@ -203,10 +199,10 @@ restartButton.addEventListener('click', () => {
     // 게임 종료
     function endGame() {
         stopTimer();
+        saveHighScore(currentScore);
         gameScreen.classList.remove('active');
         gameoverScreen.classList.add('active');
         finalScoreDisplay.textContent = currentScore;
-        saveHighScore(currentScore);
         displayHighScores();
     }
 
@@ -265,44 +261,45 @@ restartButton.addEventListener('click', () => {
     }
 
     // 최고점수 저장
-function saveHighScore(score) {
-    try {
-        if (!window.localStorage) return; // localStorage 사용 가능 여부 체크
-        
-        let storedScores = [];
-        const savedScores = localStorage.getItem('highScores');
-        if (savedScores) {
-            storedScores = JSON.parse(savedScores);
+    function saveHighScore(score) {
+        try {
+            if (!window.localStorage) return;
+            
+            let storedScores = [];
+            const savedScores = localStorage.getItem('highScores');
+            if (savedScores) {
+                storedScores = JSON.parse(savedScores);
+            }
+            
+            storedScores.push(score);
+            storedScores.sort((a, b) => b - a);
+            const top5 = storedScores.slice(0, 5);
+            
+            localStorage.setItem('highScores', JSON.stringify(top5));
+        } catch (error) {
+            console.log('Score saving failed:', error);
         }
-        
-        storedScores.push(score);
-        storedScores.sort((a, b) => b - a);
-        const top5 = storedScores.slice(0, 5);
-        
-        localStorage.setItem('highScores', JSON.stringify(top5));
-    } catch (error) {
-        console.log('Score saving failed:', error);
     }
-}
 
-// 최고점수 표시
-function displayHighScores() {
-    try {
-        if (!window.localStorage) return; // localStorage 사용 가능 여부 체크
-        
-        const savedScores = localStorage.getItem('highScores');
-        let storedScores = [];
-        if (savedScores) {
-            storedScores = JSON.parse(savedScores);
+    // 최고점수 표시
+    function displayHighScores() {
+        try {
+            if (!window.localStorage) return;
+            
+            const savedScores = localStorage.getItem('highScores');
+            let storedScores = [];
+            if (savedScores) {
+                storedScores = JSON.parse(savedScores);
+            }
+            
+            highScoresList.innerHTML = '';
+            storedScores.forEach(score => {
+                const li = document.createElement('li');
+                li.textContent = score;
+                highScoresList.appendChild(li);
+            });
+        } catch (error) {
+            console.log('Score display failed:', error);
         }
-        
-        highScoresList.innerHTML = '';
-        storedScores.forEach(score => {
-            const li = document.createElement('li');
-            li.textContent = score;
-            highScoresList.appendChild(li);
-        });
-    } catch (error) {
-        console.log('Score display failed:', error);
     }
 });
