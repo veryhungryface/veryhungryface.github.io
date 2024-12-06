@@ -103,6 +103,11 @@ html, body {
     outline: none;
 }
 
+/* 숫자 범위 입력창 폭 줄이기 */
+.setting-group input[type="number"] {
+    width: 80px; /* 원하는 폭으로 조절 */
+}
+
 /* 게임 화면 */
 #game-screen {
     display: flex;
@@ -173,16 +178,6 @@ html, body {
     background: #3f3f3f;
 }
 
-/* 클릭 시 소수/합성수에 따른 배경 변화는 JS에서 적용하므로 CSS는 기본 배경만 지정 */
-
-.control-panel {
-    margin-top: 1rem;
-}
-
-#no-more-primes-btn {
-    font-size: 1.2rem;
-}
-
 /* 게임 오버 화면 */
 #gameover-screen {
     color: #fff;
@@ -210,7 +205,7 @@ html, body {
     margin: 0.5rem 0;
 }
 
-/* 반응형 조정 (선택사항) */
+/* 반응형 조정 */
 @media (max-width: 480px) {
     .info-panel {
         flex-direction: column;
