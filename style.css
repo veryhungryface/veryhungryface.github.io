@@ -5,7 +5,6 @@ html, body {
     background: #121212;
     color: #ddd;
     height: 100%;
-    overflow: hidden;
 }
 
 .game-container {
@@ -103,9 +102,9 @@ html, body {
     outline: none;
 }
 
-/* 숫자 범위 입력창 폭 줄이기 */
+/* 숫자 범위 입력창 폭 축소 */
 .setting-group input[type="number"] {
-    width: 80px; /* 원하는 폭으로 조절 */
+    width: 80px;
 }
 
 /* 게임 화면 */
