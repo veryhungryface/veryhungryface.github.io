@@ -8,6 +8,7 @@
 </head>
 <body>
     <div class="game-container">
+
         <!-- 시작 화면 -->
         <div class="screen screen-start active" id="start-screen">
             <h1 class="game-title">소수전쟁</h1>
@@ -28,9 +29,10 @@
             <div class="setting-group">
                 <label>시간제한:</label>
                 <select id="time-limit-select">
-                    <option value="20">20초</option>
-                    <option value="30">30초</option>
                     <option value="40">40초</option>
+                    <option value="30">30초</option>
+                    <option value="20">20초</option>
+
                 </select>
             </div>
             <div class="setting-group">
@@ -75,8 +77,8 @@
             <ol id="high-scores-list"></ol>
             <button class="btn" id="restart-button">게임 다시하기</button>
         </div>
+        
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
