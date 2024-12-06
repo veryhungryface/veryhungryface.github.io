@@ -39,31 +39,33 @@ document.addEventListener('DOMContentLoaded', () => {
     let clickedNumbers = new Set();  // 클릭된 숫자들
 
     // 시작화면 -> 설정화면
-    startButton.addEventListener('click', () => {
-        startScreen.classList.remove('active');
-        settingsScreen.classList.add('active');
-    });
+startButton.addEventListener('click', () => {
+    document.querySelector('.screen.active').classList.remove('active');
+    settingsScreen.classList.add('active');
+});
 
-    // 설정화면 -> 게임화면
-    startGameButton.addEventListener('click', () => {
-        if (!validateInputs()) return;
+// 설정화면 -> 게임화면
+startGameButton.addEventListener('click', () => {
+    if (!validateInputs()) return;
 
-        // 게임 설정 저장
-        gridSize = parseInt(gameModeSelect.value);
-        timeLimit = parseInt(timeLimitSelect.value);
-        heartCount = parseInt(heartCountSelect.value);
-        numberRangeStart = parseInt(rangeStartInput.value);
-        numberRangeEnd = parseInt(rangeEndInput.value);
+    // 게임 설정 저장
+    gridSize = parseInt(gameModeSelect.value);
+    timeLimit = parseInt(timeLimitSelect.value);
+    heartCount = parseInt(heartCountSelect.value);
+    numberRangeStart = parseInt(rangeStartInput.value);
+    numberRangeEnd = parseInt(rangeEndInput.value);
 
-        initGame();
-    });
+    document.querySelector('.screen.active').classList.remove('active');
+    gameScreen.classList.add('active');
+    initGame();
+});
 
-    // 게임 오버화면 -> 설정화면
-    restartButton.addEventListener('click', () => {
-        gameoverScreen.classList.remove('active');
-        settingsScreen.classList.add('active');
-        stopTimer();
-    });
+// 게임 오버화면 -> 설정화면
+restartButton.addEventListener('click', () => {
+    document.querySelector('.screen.active').classList.remove('active');
+    settingsScreen.classList.add('active');
+    stopTimer();
+});
 
     // 더이상 소수없음 버튼 클릭
     noMorePrimesBtn.addEventListener('click', () => {
