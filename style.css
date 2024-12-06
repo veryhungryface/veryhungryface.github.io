@@ -1,16 +1,22 @@
-body {
+html, body {
     margin: 0;
+    padding: 0;
     font-family: sans-serif;
-    background: #f0f0f0;
+    background: #121212;
+    color: #ddd;
+    height: 100%;
+    overflow: hidden;
 }
 
 .game-container {
     width: 100vw;
     height: 100vh;
-    overflow: hidden;
     position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
+/* 공통 화면 스타일 */
 .screen {
     width: 100%;
     height: 100%;
@@ -18,7 +24,10 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: #ffffff;
+    background: #121212;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .screen.active {
@@ -26,15 +35,199 @@ body {
 }
 
 .game-title {
-    font-size: 3rem;
-    color: #333;
-    margin-bottom: 2rem;
+    font-size: 4rem;
+    color: #ffffff;
+    margin-bottom: 3rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px #000;
+    letter-spacing: 5px;
 }
 
 .btn {
-    background: #0055ff;
-    color: white;
+    background: #1e88e5;
+    color: #ffffff;
     padding: 1rem 2rem;
     border: none;
     cursor: pointer;
-    font-size:
+    font-size: 1.2rem;
+    border-radius: 5px;
+    margin-top: 1rem;
+    transition: background 0.3s ease;
+}
+
+.btn:hover {
+    background: #1565c0;
+}
+
+/* 시작 화면 */
+#start-screen {
+    flex-direction: column;
+}
+
+/* 설정 화면 */
+#settings-screen {
+    color: #ffffff;
+    width: 400px;
+    max-width: 90%;
+    background: #1e1e1e;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+}
+
+#settings-screen h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.setting-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
+    color: #ccc;
+}
+
+.setting-group label {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.setting-group select, 
+.setting-group input {
+    padding: 0.5rem;
+    font-size: 1rem;
+    background: #333;
+    color: #fff;
+    border: 1px solid #444;
+    border-radius: 5px;
+    outline: none;
+}
+
+/* 게임 화면 */
+#game-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+}
+
+.info-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 80%;
+    max-width: 700px;
+    margin-bottom: 2rem;
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+.hearts {
+    display: flex;
+    font-size: 1.5rem;
+}
+
+.timer {
+    font-size: 1.5rem;
+    text-align: center;
+    margin: 0 1rem;
+    flex: 1;
+}
+
+.score-panel {
+    font-size: 1.5rem;
+}
+
+.board-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+#game-board {
+    display: grid;
+    grid-gap: 5px;
+    background: #444;
+    padding: 10px;
+    border: 2px solid #555;
+    box-shadow: 0 0 10px rgba(0,0,0,0.7);
+}
+
+.cell {
+    background: #333;
+    color: #fff;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #222;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    user-select: none;
+}
+
+.cell:hover {
+    background: #3f3f3f;
+}
+
+/* 클릭 시 소수/합성수에 따른 배경 변화는 JS에서 적용하므로 CSS는 기본 배경만 지정 */
+
+.control-panel {
+    margin-top: 1rem;
+}
+
+#no-more-primes-btn {
+    font-size: 1.2rem;
+}
+
+/* 게임 오버 화면 */
+#gameover-screen {
+    color: #fff;
+}
+
+#gameover-screen h2 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+#final-score {
+    font-size: 2rem;
+    color: #1e88e5;
+}
+
+#high-scores-list {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 2rem;
+    text-align: center;
+}
+
+#high-scores-list li {
+    font-size: 1.2rem;
+    margin: 0.5rem 0;
+}
+
+/* 반응형 조정 (선택사항) */
+@media (max-width: 480px) {
+    .info-panel {
+        flex-direction: column;
+        width: 90%;
+    }
+    .timer, .score-panel {
+        margin-top: 1rem;
+    }
+    #game-board {
+        grid-gap: 3px;
+    }
+    .cell {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+    #settings-screen {
+        width: 90%;
+    }
+}
