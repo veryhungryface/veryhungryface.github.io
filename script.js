@@ -23,6 +23,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const finalScoreDisplay = document.getElementById('final-score');
     const highScoresList = document.getElementById('high-scores-list');
 
+    // 시작 화면 강제 표시
+    startScreen.style.display = 'flex';
+    startScreen.classList.add('active');
+
     // 상태 변수
     let gridSize = 3;            // 게임 모드(3x3, 4x4, 5x5)
     let timeLimit = 40;          // 시간제한
