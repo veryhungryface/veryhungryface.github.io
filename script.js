@@ -261,30 +261,44 @@ restartButton.addEventListener('click', () => {
     }
 
     // 최고점수 저장
-    function saveHighScore(score) {
-        try {
-            const storedScores = JSON.parse(localStorage.getItem('highScores')) || [];
-            storedScores.push(score);
-            storedScores.sort((a, b) => b - a);
-            const top5 = storedScores.slice(0, 5);
-            localStorage.setItem('highScores', JSON.stringify(top5));
-        } catch (error) {
-            console.error('Error saving score:', error);
+function saveHighScore(score) {
+    try {
+        if (!window.localStorage) return; // localStorage 사용 가능 여부 체크
+        
+        let storedScores = [];
+        const savedScores = localStorage.getItem('highScores');
+        if (savedScores) {
+            storedScores = JSON.parse(savedScores);
         }
+        
+        storedScores.push(score);
+        storedScores.sort((a, b) => b - a);
+        const top5 = storedScores.slice(0, 5);
+        
+        localStorage.setItem('highScores', JSON.stringify(top5));
+    } catch (error) {
+        console.log('Score saving failed:', error);
     }
+}
 
-    // 최고점수 표시
-    function displayHighScores() {
-        try {
-            const storedScores = JSON.parse(localStorage.getItem('highScores')) || [];
-            highScoresList.innerHTML = '';
-            storedScores.forEach(score => {
-                const li = document.createElement('li');
-                li.textContent = score;
-                highScoresList.appendChild(li);
-            });
-        } catch (error) {
-            console.error('Error displaying scores:', error);
+// 최고점수 표시
+function displayHighScores() {
+    try {
+        if (!window.localStorage) return; // localStorage 사용 가능 여부 체크
+        
+        const savedScores = localStorage.getItem('highScores');
+        let storedScores = [];
+        if (savedScores) {
+            storedScores = JSON.parse(savedScores);
         }
+        
+        highScoresList.innerHTML = '';
+        storedScores.forEach(score => {
+            const li = document.createElement('li');
+            li.textContent = score;
+            highScoresList.appendChild(li);
+        });
+    } catch (error) {
+        console.log('Score display failed:', error);
     }
 });
