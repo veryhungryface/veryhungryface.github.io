@@ -8,15 +8,14 @@
 </head>
 <body>
     <div class="game-container">
-
         <!-- 시작 화면 -->
-        <div class="screen screen-start acrive" id="start-screen">
+        <div class="screen active" id="start-screen">
             <h1 class="game-title">소수전쟁</h1>
             <button class="btn" id="start-button">게임시작</button>
         </div>
 
         <!-- 설정 화면 -->
-        <div class="screen screen-settings" id="settings-screen">
+        <div class="screen" id="settings-screen">
             <h2>게임 설정</h2>
             <div class="setting-group">
                 <label>게임모드:</label>
@@ -32,7 +31,6 @@
                     <option value="40">40초</option>
                     <option value="30">30초</option>
                     <option value="20">20초</option>
-
                 </select>
             </div>
             <div class="setting-group">
@@ -53,7 +51,7 @@
         </div>
 
         <!-- 게임 화면 -->
-        <div class="screen screen-game" id="game-screen">
+        <div class="screen" id="game-screen">
             <div class="info-panel">
                 <div class="hearts" id="hearts-container"></div>
                 <div class="timer" id="timer-container"></div>
@@ -70,14 +68,13 @@
         </div>
 
         <!-- 게임 오버 화면 -->
-        <div class="screen screen-gameover" id="gameover-screen">
+        <div class="screen" id="gameover-screen">
             <h2>Game Over</h2>
             <p>점수: <span id="final-score"></span></p>
             <h3>상위 5 점수 기록</h3>
             <ol id="high-scores-list"></ol>
             <button class="btn" id="restart-button">게임 다시하기</button>
         </div>
-        
     </div>
     <script src="script.js"></script>
 </body>
