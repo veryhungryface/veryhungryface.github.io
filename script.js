@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 화면 요소 참조
+    // 화면 전환 및 요소 참조
     const startScreen = document.getElementById('start-screen');
     const settingsScreen = document.getElementById('settings-screen');
     const gameScreen = document.getElementById('game-screen');
@@ -23,79 +23,105 @@ document.addEventListener('DOMContentLoaded', () => {
     const finalScoreDisplay = document.getElementById('final-score');
     const highScoresList = document.getElementById('high-scores-list');
 
-    // 게임 상태 변수
-    let gridSize = 3;
-    let timeLimit = 40;
-    let heartCount = 2;
-    let numberRangeStart = 1;
-    let numberRangeEnd = 50;
-    let timer;
-    let currentTime;
-    let currentScore = 0;
-    let currentStage = 1;
-    let heartsRemaining = 2;
-    let numbersArray = [];
-    let primeCheckMap = {};
-    let clickedNumbers = new Set();
-    let gameActive = false;
+    // 상태 변수
+    let gridSize = 3;            // 게임 모드(3x3, 4x4, 5x5)
+    let timeLimit = 40;          // 시간제한
+    let heartCount = 2;          // 하트 개수
+    let numberRangeStart = 1;    // 숫자 범위 시작
+    let numberRangeEnd = 50;     // 숫자 범위 끝
+    let timer;                   // 타이머
+    let currentTime;             // 현재 시간
+    let currentScore = 0;        // 현재 점수
+    let currentStage = 1;        // 현재 스테이지
+    let heartsRemaining = 2;     // 남은 하트수
+    let numbersArray = [];       // 게임판에 표시될 숫자들
+    let primeCheckMap = {};      // 소수 체크 맵
+    let clickedNumbers = new Set();  // 클릭된 숫자들
 
-    // 이벤트 리스너 설정
+    // 시작화면 -> 설정화면
     startButton.addEventListener('click', () => {
         startScreen.classList.remove('active');
         settingsScreen.classList.add('active');
     });
 
+    // 설정화면 -> 게임화면
     startGameButton.addEventListener('click', () => {
-        const start = parseInt(rangeStartInput.value);
-        const end = parseInt(rangeEndInput.value);
-        
-        if (isNaN(start) || isNaN(end) || start >= end) {
-            alert('올바른 숫자 범위를 입력해주세요.');
-            return;
-        }
+        if (!validateInputs()) return;
 
+        // 게임 설정 저장
         gridSize = parseInt(gameModeSelect.value);
         timeLimit = parseInt(timeLimitSelect.value);
         heartCount = parseInt(heartCountSelect.value);
-        numberRangeStart = start;
-        numberRangeEnd = end;
+        numberRangeStart = parseInt(rangeStartInput.value);
+        numberRangeEnd = parseInt(rangeEndInput.value);
 
         initGame();
-        settingsScreen.classList.remove('active');
-        gameScreen.classList.add('active');
     });
 
+    // 게임 오버화면 -> 설정화면
     restartButton.addEventListener('click', () => {
         gameoverScreen.classList.remove('active');
         settingsScreen.classList.add('active');
         stopTimer();
     });
 
+    // 더이상 소수없음 버튼 클릭
     noMorePrimesBtn.addEventListener('click', () => {
-        if (!gameActive) return;
-        
-        if (!hasPrimeInBoard()) {
-            currentScore += 30;
+        if (!hasPrimeInBoard()) {    // 소수가 없으면
+            currentScore += 30;       // 30점 추가
             scoreDisplay.textContent = currentScore;
-            currentStage++;
-            resetBoard();
+            currentStage++;          // 스테이지 증가
+            resetBoard();           // 보드 재설정
         } else {
-            loseHeart();
+            loseHeart();           // 하트 감소
         }
+        resetTimer();
     });
 
+    // 입력값 검증
+    function validateInputs() {
+        const start = parseInt(rangeStartInput.value);
+        const end = parseInt(rangeEndInput.value);
+        
+        if (isNaN(start) || isNaN(end) || start >= end) {
+            alert('올바른 숫자 범위를 입력해주세요.');
+            return false;
+        }
+
+        // 최소 필요 숫자 개수 체크
+        let count = 0;
+        for (let i = start; i <= end; i++) {
+            if (i % 2 !== 0 && i % 5 !== 0) count++;
+            if (count >= gridSize * gridSize) return true;
+        }
+        
+        alert('선택한 범위가 너무 좁습니다. 더 큰 범위를 선택해주세요.');
+        return false;
+    }
+
+    // 게임 초기화
     function initGame() {
-        gameActive = true;
         currentScore = 0;
         currentStage = 1;
         heartsRemaining = heartCount;
         clickedNumbers.clear();
         
-        scoreDisplay.textContent = currentScore;
+        scoreDisplay.textContent = '0';
         initHearts();
-        resetBoard();
+        generateNumbersArray();
+        createBoard();
+        startTimer();
+
+        settingsScreen.classList.remove('active');
+        gameScreen.classList.add('active');
     }
 
+    // 하트 초기화
+    function initHearts() {
+        heartsContainer.innerHTML = '❤️'.repeat(heartsRemaining);
+    }
+
+    // 게임판 재설정
     function resetBoard() {
         stopTimer();
         gameBoard.innerHTML = '';
@@ -104,67 +130,62 @@ document.addEventListener('DOMContentLoaded', () => {
         startTimer();
     }
 
+    // 게임판에 표시될 숫자 생성
     function generateNumbersArray() {
         numbersArray = [];
         primeCheckMap = {};
         
         let candidates = [];
         for (let i = numberRangeStart; i <= numberRangeEnd; i++) {
-            if ((i % 2 === 0 && i !== 2) || (i % 5 === 0 && i !== 5)) continue;
+            if (i % 2 === 0 || i % 5 === 0) continue;
             candidates.push(i);
-        }
-
-        if (candidates.length < gridSize * gridSize) {
-            alert('선택한 범위가 너무 좁습니다. 더 큰 범위를 선택해주세요.');
-            return;
         }
 
         shuffleArray(candidates);
         numbersArray = candidates.slice(0, gridSize * gridSize);
 
+        // 소수 판별 미리 계산
         numbersArray.forEach(num => {
             primeCheckMap[num] = isPrime(num);
         });
     }
 
+    // 게임판 생성
     function createBoard() {
+        gameBoard.innerHTML = '';
         gameBoard.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+        gameBoard.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
         
-        for (let i = 0; i < gridSize * gridSize; i++) {
+        numbersArray.forEach(number => {
             const cell = document.createElement('div');
             cell.classList.add('cell');
-            cell.textContent = numbersArray[i];
-            cell.dataset.number = numbersArray[i];
+            cell.textContent = number;
+            cell.dataset.number = number;
             cell.addEventListener('click', onNumberClick);
             gameBoard.appendChild(cell);
-        }
+        });
     }
 
+    // 숫자 클릭 처리
     function onNumberClick(e) {
-        if (!gameActive) return;
-        
         const cell = e.target;
-        const num = parseInt(cell.dataset.number, 10);
+        const num = parseInt(cell.dataset.number);
 
         if (clickedNumbers.has(num)) return;
         clickedNumbers.add(num);
 
-        if (primeCheckMap[num]) {
-            cell.style.backgroundColor = '#0066cc'; // 파란색
+        if (primeCheckMap[num]) {         // 소수이면
+            cell.style.backgroundColor = 'blue';
             currentScore += 10;
             scoreDisplay.textContent = currentScore;
-        } else {
-            cell.style.backgroundColor = '#cc0000'; // 빨간색
+        } else {                         // 합성수이면
+            cell.style.backgroundColor = 'red';
             loseHeart();
         }
-        
         resetTimer();
     }
 
-    function initHearts() {
-        heartsContainer.innerHTML = '❤️'.repeat(heartsRemaining);
-    }
-
+    // 하트 감소
     function loseHeart() {
         heartsRemaining--;
         initHearts();
@@ -173,6 +194,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // 게임 종료
+    function endGame() {
+        stopTimer();
+        gameScreen.classList.remove('active');
+        gameoverScreen.classList.add('active');
+        finalScoreDisplay.textContent = currentScore;
+        saveHighScore(currentScore);
+        displayHighScores();
+    }
+
+    // 타이머 시작
     function startTimer() {
         currentTime = timeLimit;
         timerContainer.textContent = `${currentTime}초`;
@@ -185,11 +217,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000);
     }
 
+    // 타이머 리셋
     function resetTimer() {
         stopTimer();
         startTimer();
     }
 
+    // 타이머 중지
     function stopTimer() {
         if (timer) {
             clearInterval(timer);
@@ -197,17 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function endGame() {
-        gameActive = false;
-        stopTimer();
-        saveHighScore(currentScore);
-        displayHighScores();
-        
-        gameScreen.classList.remove('active');
-        gameoverScreen.classList.add('active');
-        finalScoreDisplay.textContent = currentScore;
-    }
-
+    // 소수 판별
     function isPrime(num) {
         if (num < 2) return false;
         for (let i = 2; i <= Math.sqrt(num); i++) {
@@ -216,6 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return true;
     }
 
+    // 게임판에 소수가 있는지 확인
     function hasPrimeInBoard() {
         for (let num of numbersArray) {
             if (primeCheckMap[num] && !clickedNumbers.has(num)) {
@@ -225,6 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return false;
     }
 
+    // 배열 섞기
     function shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -232,6 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // 최고점수 저장
     function saveHighScore(score) {
         try {
             const storedScores = JSON.parse(localStorage.getItem('highScores')) || [];
@@ -244,6 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // 최고점수 표시
     function displayHighScores() {
         try {
             const storedScores = JSON.parse(localStorage.getItem('highScores')) || [];
