@@ -8,11 +8,18 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const buttons = {
-        start: document.getElementById('start-button'),
-        startGame: document.getElementById('start-game-button'),
-        noMorePrimes: document.getElementById('no-more-primes-btn'),
-        restart: document.getElementById('restart-button')
-    };
+    start: document.getElementById('start-button'),
+    startGame: document.getElementById('start-game-button'),
+    noMorePrimes: document.getElementById('no-more-primes-btn'),
+    restart: document.getElementById('restart-button'),
+    clearRecords: document.getElementById('clear-records-button') // 새로 추가한 버튼
+};
+
+// 기록 초기화 버튼 클릭 시 localStorage 비우고 리스트 갱신
+buttons.clearRecords.addEventListener('click', () => {
+    localStorage.clear();
+    displayHighScores();
+});
 
     const gameElements = {
         board: document.getElementById('game-board'),
@@ -67,17 +74,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 게임 시작 처리
     function handleGameStart() {
-        if (!validateSettings()) return;
+    if (!validateSettings()) return;
 
-        // 게임 설정 저장
-        gameState.mode = parseInt(settings.modeSelect.value);
-        gameState.timeLimit = parseInt(settings.timeSelect.value);
-        gameState.hearts = parseInt(settings.heartSelect.value);
-        gameState.timeLeft = gameState.timeLimit;
+    gameState.mode = parseInt(settings.modeSelect.value);
+    gameState.timeLimit = parseInt(settings.timeSelect.value);
+    gameState.hearts = parseInt(settings.heartSelect.value);
+    gameState.initialHearts = gameState.hearts; // 시작 시 하트 수를 기록
 
-        initGame();
-        showScreen('game');
-    }
+    gameState.timeLeft = gameState.timeLimit;
+
+    initGame();
+    showScreen('game');
+}
 
     // 설정 유효성 검사
     function validateSettings() {
@@ -289,9 +297,11 @@ function saveHighScore(score) {
         const gameInfo = {
             score: score,
             mode: `${gameState.mode}x${gameState.mode}`,
-            timeLimit: gameState.timeLimit,
-            hearts: gameState.hearts,
             range: `${settings.rangeStart.value}~${settings.rangeEnd.value}`,
+            timeLimit: gameState.timeLimit,
+            // 초기 하트 수와 마지막 남은 하트 수를 모두 저장하고 싶다면 다음과 같이 할 수도 있음
+            initialHearts: gameState.initialHearts,
+            hearts: gameState.hearts,
             date: new Date().toLocaleDateString()
         };
 
@@ -304,6 +314,7 @@ function saveHighScore(score) {
         scores.push(gameInfo);
         scores.sort((a, b) => b.score - a.score);
         scores = scores.slice(0, 5);
+
         localStorage.setItem('highScores', JSON.stringify(scores));
     } catch (error) {
         console.error('점수 저장 실패:', error);
