@@ -1,3 +1,4 @@
+/* 기본 스타일 */
 html, body {
     margin: 0;
     padding: 0;
@@ -14,24 +15,30 @@ html, body {
     overflow: hidden;
 }
 
-/* 공통 화면 스타일 */
+/* 화면 공통 스타일 */
 .screen {
     width: 100%;
     height: 100%;
     display: none;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     position: absolute;
     top: 0;
     left: 0;
+    background-color: #121212;
+    opacity: 0;
+    transition: opacity 0.3s ease;
     z-index: 1;
 }
 
 .screen.active {
-    display: flex !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    z-index: 10;
 }
 
+/* 시작 화면 */
 .game-title {
     font-size: 4rem;
     color: #ffffff;
@@ -41,6 +48,7 @@ html, body {
     letter-spacing: 5px;
 }
 
+/* 버튼 스타일 */
 .btn {
     background: #1e88e5;
     color: #ffffff;
@@ -49,8 +57,10 @@ html, body {
     cursor: pointer;
     font-size: 1.2rem;
     border-radius: 5px;
-    margin-top: 1rem;
+    margin: 1rem 0;
     transition: background 0.3s ease;
+    z-index: 15;
+    position: relative;
 }
 
 .btn:hover {
@@ -96,14 +106,13 @@ html, body {
     outline: none;
 }
 
-/* 숫자 범위 입력창 폭 축소 */
 .setting-group input[type="number"] {
     width: 80px;
 }
 
 /* 게임 화면 */
 #game-screen {
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: center;
     padding: 2rem;
@@ -118,6 +127,7 @@ html, body {
     margin-bottom: 2rem;
     color: #fff;
     font-size: 1.2rem;
+    z-index: 15;
 }
 
 .hearts {
@@ -140,7 +150,8 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 2rem;
+    margin: 2rem 0;
+    z-index: 15;
 }
 
 #game-board {
@@ -171,9 +182,18 @@ html, body {
     background: #3f3f3f;
 }
 
+.control-panel {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+    z-index: 15;
+}
+
 /* 게임 오버 화면 */
 #gameover-screen {
     color: #fff;
+    text-align: center;
 }
 
 #gameover-screen h2 {
@@ -198,7 +218,7 @@ html, body {
     margin: 0.5rem 0;
 }
 
-/* 반응형 조정 */
+/* 반응형 스타일 */
 @media (max-width: 480px) {
     .info-panel {
         flex-direction: column;
@@ -217,5 +237,8 @@ html, body {
     }
     #settings-screen {
         width: 90%;
+    }
+    .game-title {
+        font-size: 3rem;
     }
 }
