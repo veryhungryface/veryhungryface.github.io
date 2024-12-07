@@ -26,12 +26,10 @@ html, body {
 
 /* 화면 공통 스타일 */
 .screen {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
     display: none;
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -44,27 +42,28 @@ html, body {
 
 /* 시작 화면 */
 #start-screen {
+    /* 여기에서는 display:flex;를 직접 지정하지 않음 */
     position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    /* 제시한 이미지 URL 사용 */
-    background: url('https://i.ibb.co/m5x4PhV/88-A780-C7-A4-D5-48-C9-A080-B859-E482091-A.png') no-repeat center center;
+    /* background, 오버레이 설정은 그대로 */
+    background: url('...') no-repeat center center;
     background-size: cover;
 }
 
+/* 오버레이 부분 유지하되 포인터이벤트 차단(선택사항) */
 #start-screen::before {
     content: "";
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.5); /* 반투명 검은 오버레이 */
-    z-index: 1;
+    top:0; left:0; right:0; bottom:0;
+    background: rgba(0,0,0,0.5);
+    z-index:1;
+    pointer-events:none; /* 이 속성으로 오버레이가 클릭을 막지 않도록 할 수도 있음 */
 }
 
+/* 타이틀과 버튼은 오버레이 위로 */
 #start-screen .game-title,
 #start-screen .btn {
-    z-index: 2; /* 오버레이 위로 올리기 */
+    z-index:2;
+    position: relative; /* position으로 오버레이보다 앞서게 */
 }
 
 .game-title {
