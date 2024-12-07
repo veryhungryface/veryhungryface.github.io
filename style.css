@@ -138,8 +138,9 @@ html, body {
 }
 
 .cell {
-    width: 60px;
-    height: 60px;
+    width: 90px;
+    height: 90px;
+    font-size: 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -258,9 +259,9 @@ html, body {
     }
 
     .cell {
-        width: 45px;
-        height: 45px;
-        font-size: 1.2rem;
+        width: 90px;
+        height: 90px;
+        font-size: 2rem;
     }
 
     .gameover-content {
