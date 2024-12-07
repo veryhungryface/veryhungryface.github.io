@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     // DOM 요소 참조
     const screens = {
@@ -133,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function generateNumbers() {
         const start = parseInt(settings.rangeStart.value);
         const end = parseInt(settings.rangeEnd.value);
-        const candidates = [];
+        let candidates = [];
         
         for (let i = start; i <= end; i++) {
             if (i % 2 !== 0 && i % 5 !== 0) {
@@ -158,7 +157,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const cell = document.createElement('div');
             cell.className = 'cell';
             cell.textContent = num;
-            cell.addEventListener('click', () => handleCellClick(cell, num));
+            
+            // 이벤트 리스너를 외부 함수로 분리
+            function cellClickHandler() {
+                handleCellClick(cell, num);
+            }
+            cell.addEventListener('click', cellClickHandler);
+            
             gameElements.board.appendChild(cell);
         });
     }
@@ -170,10 +175,11 @@ document.addEventListener('DOMContentLoaded', () => {
         gameState.clicked.add(num);
         
         if (gameState.primeMap[num]) {
-            cell.style.backgroundColor = 'blue';
+            cell.style.backgroundColor = '#0066cc';  // 파란색
             gameState.score += 10;
+            cell.classList.add('found-prime');
         } else {
-            cell.style.backgroundColor = 'red';
+            cell.style.backgroundColor = '#cc0000';  // 빨간색
             gameState.hearts--;
         }
         
@@ -183,6 +189,44 @@ document.addEventListener('DOMContentLoaded', () => {
         if (gameState.hearts <= 0) {
             endGame();
         }
+    }
+
+    // 더이상 소수없음 처리
+    function handleNoMorePrimes() {
+        if (!gameState.active) return;
+
+        // 찾지 않은 소수가 있는지 확인
+        const unclickedPrimes = gameState.numbers.filter(num => 
+            gameState.primeMap[num] && !gameState.clicked.has(num)
+        );
+
+        // 모든 소수를 찾았는지 확인
+        const allFoundPrimes = gameState.numbers.filter(num => 
+            gameState.primeMap[num]
+        ).every(num => gameState.clicked.has(num));
+
+        if (unclickedPrimes.length === 0 && allFoundPrimes) {
+            // 모든 소수를 찾았을 때만 다음 라운드로
+            gameState.score += 30;
+            gameState.stage++;
+            nextRound();
+        } else {
+            // 아직 찾지 않은 소수가 있으면 하트 감소
+            gameState.hearts--;
+            updateUI();
+            if (gameState.hearts <= 0) {
+                endGame();
+            }
+        }
+    }
+
+    // 다음 라운드 시작
+    function nextRound() {
+        gameState.clicked.clear(); // 클릭 기록 초기화
+        generateNumbers();
+        createBoard();
+        updateUI();
+        resetTimer();
     }
 
     // UI 업데이트
@@ -212,26 +256,6 @@ document.addEventListener('DOMContentLoaded', () => {
         startTimer();
     }
 
-    // 더이상 소수없음 처리
-    function handleNoMorePrimes() {
-        if (!gameState.active) return;
-
-        if (!hasRemainingPrimes()) {
-            gameState.score += 30;
-            gameState.stage++;
-            generateNumbers();
-            createBoard();
-            updateUI();
-            resetTimer();
-        } else {
-            gameState.hearts--;
-            updateUI();
-            if (gameState.hearts <= 0) {
-                endGame();
-            }
-        }
-    }
-
     // 게임 종료
     function endGame() {
         gameState.active = false;
@@ -250,12 +274,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (num % i === 0) return false;
         }
         return true;
-    }
-
-    function hasRemainingPrimes() {
-        return gameState.numbers.some(num => 
-            gameState.primeMap[num] && !gameState.clicked.has(num)
-        );
     }
 
     function shuffleArray(array) {
