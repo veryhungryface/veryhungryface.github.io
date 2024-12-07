@@ -1,4 +1,7 @@
-/* 기본 초기화 */
+css 검토해줘
+
+
+/* 기본 스타일 초기화 */
 * {
     margin: 0;
     padding: 0;
@@ -6,15 +9,13 @@
 }
 
 html, body {
-    width: 100%;
     height: 100%;
     font-family: Arial, sans-serif;
     background: #121212;
     color: #ffffff;
-    overflow: hidden; /* 필요한 경우 스크롤 허용할 수도 있음 */
 }
 
-/* 게임 전체 컨테이너 */
+/* 게임 컨테이너 */
 .game-container {
     width: 100%;
     height: 100vh;
@@ -22,14 +23,16 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
 }
 
-/* 각 화면을 전환하는 컨테이너 */
+/* 화면 공통 스타일 */
 .screen {
     width: 100%;
     height: 100%;
     position: absolute;
-    top: 0; left: 0;
+    top: 0;
+    left: 0;
     display: none;
     flex-direction: column;
     justify-content: center;
@@ -39,43 +42,66 @@ html, body {
 
 .screen.active {
     display: flex;
-    animation: fadeIn 0.3s ease-in-out;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
 }
 
 /* 시작 화면 */
-#start-screen .game-title {
-    font-size: 3rem;
-    font-weight: bold;
-    margin-bottom: 2rem;
-    text-shadow: 2px 2px 4px #000;
-    text-align: center;
+#start-screen {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* 제시한 이미지 URL 사용 */
+    background: url('https://i.ibb.co/m5x4PhV/88-A780-C7-A4-D5-48-C9-A080-B859-E482091-A.png') no-repeat center center;
+    background-size: cover;
 }
 
-/* 기본 버튼 스타일 */
+#start-screen::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5); /* 반투명 검은 오버레이 */
+    z-index: 1;
+}
+
+#start-screen .game-title,
+#start-screen .btn {
+    z-index: 2; /* 오버레이 위로 올리기 */
+}
+
+.game-title {
+    font-size: 4rem;
+    color: #ffffff;
+    margin-bottom: 3rem;
+    font-weight: bold;
+    letter-spacing: 5px;
+    text-align: center;
+    text-shadow: 2px 2px 4px #000;
+}
+
 .btn {
     background: #1e88e5;
     color: #ffffff;
-    padding: 0.8rem 1.5rem;
+    padding: 1rem 2rem;
     border: none;
-    border-radius: 5px;
-    font-size: 1rem;
     cursor: pointer;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    margin-top: 1rem;
     transition: background 0.3s ease;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-    margin-top: 1rem;
 }
 
 .btn:hover {
     background: #1565c0;
 }
 
-/* 설정 화면 스타일 */
-#settings-screen .settings-wrapper {
+/* 설정 화면 */
+#settings-screen {
+    padding: 20px;
+}
+
+.settings-wrapper {
     background: #1e1e1e;
     padding: 2rem;
     border-radius: 10px;
@@ -107,67 +133,54 @@ html, body {
 
 /* 게임 화면 */
 #game-screen {
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
+    padding: 2rem;
 }
 
 .info-panel {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    justify-content: space-between;
+    width: 80%;
+    max-width: 600px;
+    margin-bottom: 2rem;
     background: rgba(255, 255, 255, 0.1);
     padding: 1rem;
     border-radius: 8px;
-    margin-bottom: 1rem;
-    width: 90%;
-    max-width: 400px;
-    text-align: center;
 }
 
-.info-panel .hearts, 
-.info-panel .timer, 
-.info-panel .score-panel {
+.hearts, .timer, .score-panel {
     font-size: 1.5rem;
-    margin: 0.5rem 0;
 }
 
-/* 게임보드 컨테이너: 화면 폭 90%로 정사각형 유지 */
 .board-container {
-    width: 90vw;
-    height: 90vw;
+    width: 300px; /* 원하는 보드 전체 너비를 지정 */
+    height: 300px; /* 높이도 동일하게 주어 정사각형 보드 유지 */
+    margin: 0 auto; /* 중앙정렬 (선택사항) */
     box-sizing: border-box;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 1rem;
 }
 
-/* 실제 게임 보드: grid 사용 */
 #game-board {
-    width: 100%;
-    height: 100%;
     display: grid;
     gap: 5px;
-    /* grid-template-columns, rows는 JS로 var(--mode)에 따라 설정한다고 가정 */
-    /* 예: grid-template-columns: repeat(var(--mode), minmax(0,1fr)); */
+    width: 100%;
+    height: 100%;
+    background: #333;
+    padding: 10px;
+    border-radius: 8px;
+    box-sizing: border-box;
 }
 
-/* 셀 스타일 */
 .cell {
-    background: #444;
-    color: #fff;
-    font-size: 1.2rem;
+    /* width, height 제거 */
+    font-size: 1.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
+    background: #444;
+    color: white;
+    cursor: pointer;
     border-radius: 4px;
     user-select: none;
-    transition: background 0.3s ease;
-    min-width: 0;
-    overflow: hidden;
+    transition: all 0.3s ease;
 }
 
 .cell:hover {
@@ -175,45 +188,45 @@ html, body {
     transform: scale(1.05);
 }
 
-/* 컨트롤 패널 (더이상 소수 없음 버튼 등) */
-.control-panel {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    margin-top: 1rem;
+/* 게임 오버 화면 */
+#gameover-screen {
+    background: rgba(0, 0, 0, 0.95);
+    padding: 20px;
 }
 
-/* 게임 오버 화면 */
-#gameover-screen .gameover-content {
-    background: #1e1e1e;
+.gameover-content {
+    max-height: 80vh; /* 화면 높이의 80% 정도로 제한 */
+    overflow-y: auto; /* 수직 스크롤 활성화 */
     padding: 2rem;
     border-radius: 10px;
     width: 90%;
-    max-width: 400px;
+    max-width: 500px;
     text-align: center;
+    background: #1e1e1e;
 }
 
 .gameover-content h2 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
 }
 
 .final-score {
-    font-size: 1.5rem;
-    margin: 1rem 0;
+    font-size: 2rem;
+    margin: 1.5rem 0;
     color: #1e88e5;
 }
 
 /* 최고 점수 리스트 */
 .high-scores-container {
-    margin: 1.5rem 0;
-    max-height: 200px;
+    max-height: 400px;
     overflow-y: auto;
+    width: 100%;
+    margin: 2rem 0;
 }
 
 .high-scores-container h3 {
     font-size: 1.2rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
     color: #888;
 }
 
@@ -267,12 +280,83 @@ html, body {
     color: #888;
 }
 
-/* 작은 화면에서 폰트 크기 조정 */
+/* 반응형 디자인 */
 @media (max-width: 480px) {
     .game-title {
-        font-size: 2.5rem;
+        font-size: 3rem;
     }
+
+    .info-panel {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
     .cell {
-        font-size: 1rem;
+        width: 90px;
+        height: 90px;
+        font-size: 2rem;
+    }
+
+    .gameover-content {
+        padding: 1.5rem;
+    }
+
+    .high-score-item {
+        padding: 12px;
+    }
+
+    .score-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+}
+
+/* 애니메이션 */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.screen.active {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* 유틸리티 클래스 */
+.hidden {
+    display: none !important;
+}
+
+/* 셀 상태 스타일 */
+.cell.prime {
+    background-color: #0066cc;
+}
+
+.cell.composite {
+    background-color: #cc0000;
+}
+
+/* 컨트롤 패널 */
+.control-panel {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+/* 포커스 효과 */
+button:focus, 
+select:focus, 
+input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.5);
+}
+
+/* 접근성 */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
     }
 }
