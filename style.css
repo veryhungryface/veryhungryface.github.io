@@ -280,8 +280,8 @@ html, body {
     }
 
     .cell {
-        width: 80vw;
-        height: 80vw;
+        width: 90px;
+        height: 90px;
         font-size: 2rem;
     }
 
