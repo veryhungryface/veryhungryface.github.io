@@ -189,12 +189,14 @@ html, body {
 }
 
 .gameover-content {
-    background: #1e1e1e;
+    max-height: 80vh; /* 화면 높이의 80% 정도로 제한 */
+    overflow-y: auto; /* 수직 스크롤 활성화 */
     padding: 2rem;
     border-radius: 10px;
     width: 90%;
     max-width: 500px;
     text-align: center;
+    background: #1e1e1e;
 }
 
 .gameover-content h2 {
@@ -212,6 +214,8 @@ html, body {
 .high-scores-container {
     width: 100%;
     margin: 2rem 0;
+    max-height: 200px; 
+    overflow-y: auto;
 }
 
 .high-scores-container h3 {
