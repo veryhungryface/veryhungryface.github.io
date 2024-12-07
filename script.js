@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+해document.addEventListener('DOMContentLoaded', () => {
     const screens = {
         start: document.getElementById('start-screen'),
         settings: document.getElementById('settings-screen'),
@@ -57,7 +57,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     showScreen('start');
 
-    buttons.start.addEventListener('click', () => showScreen('settings'));
+    buttons.start.addEventListener('click', () => {
+        console.log("start btn click");
+        showScreen('settings');
+    });
     buttons.startGame.addEventListener('click', handleGameStart);
     buttons.restart.addEventListener('click', () => showScreen('settings'));
     buttons.noMorePrimes.addEventListener('click', handleNoMorePrimes);
