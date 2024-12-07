@@ -143,21 +143,25 @@ html, body {
 }
 
 .board-container {
-    width: 80vw; /* 원하는 보드 전체 너비를 지정 */
-    height: 80vw; /* 높이도 동일하게 주어 정사각형 보드 유지 */
-    margin: 0 auto; /* 중앙정렬 (선택사항) */
+    width: min(80vw, 500px);
+    height: min(80vw, 500px); /* 정사각형 형태를 유지하기 위해 높이도 같은 규칙 적용 */
+    margin: 0 auto;
     box-sizing: border-box;
+
+    /* 중앙 정렬을 위해 Flex 사용 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #game-board {
-    display: grid;
-    gap: 5px;
-    width: 100%;
-    height: 100%;
-    background: #333;
-    padding: 10px;
+    width: 95%;
+    height: 95%;
+    background: #333; /* 보드 배경 등 원하는 스타일 적용 가능 */
     border-radius: 8px;
     box-sizing: border-box;
+    display: grid;
+    gap: 5px;
 }
 
 .cell {
