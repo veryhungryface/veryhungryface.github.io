@@ -94,6 +94,10 @@ html, body {
     border-radius: 10px;
     width: 90%;
     max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 수직 정렬일 경우 수직축 중앙정렬 */
+    justify-content: center; /* 가로 축 중앙정렬 */
 }
 
 .setting-group {
