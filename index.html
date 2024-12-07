@@ -1,63 +1,66 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>소수전쟁</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="game-container">
         <!-- 시작 화면 -->
-        <div class="screen active" id="start-screen">
+        <div class="screen" id="start-screen">
             <h1 class="game-title">소수전쟁</h1>
             <button class="btn" id="start-button">게임시작</button>
         </div>
 
         <!-- 설정 화면 -->
         <div class="screen" id="settings-screen">
-            <h2>게임 설정</h2>
-            <div class="setting-group">
-                <label>게임모드:</label>
-                <select id="game-mode-select">
-                    <option value="3">3 x 3 모드</option>
-                    <option value="4">4 x 4 모드</option>
-                    <option value="5">5 x 5 모드</option>
-                </select>
+            <div class="settings-wrapper">
+                <h2>게임 설정</h2>
+                <div class="setting-group">
+                    <label>게임모드:</label>
+                    <select id="game-mode-select">
+                        <option value="3">3 x 3 모드</option>
+                        <option value="4">4 x 4 모드</option>
+                        <option value="5">5 x 5 모드</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label>시간제한:</label>
+                    <select id="time-limit-select">
+                        <option value="40">40초</option>
+                        <option value="30">30초</option>
+                        <option value="20">20초</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label>하트수:</label>
+                    <select id="heart-count-select">
+                        <option value="1">1개</option>
+                        <option value="2">2개</option>
+                        <option value="3">3개</option>
+                        <option value="4">4개</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label>숫자 범위:</label>
+                    <div class="range-inputs">
+                        <input type="number" id="range-start" placeholder="시작 숫자" value="1">
+                        <input type="number" id="range-end" placeholder="끝 숫자" value="50">
+                    </div>
+                </div>
+                <button class="btn" id="start-game-button">소수 전쟁 시작</button>
             </div>
-            <div class="setting-group">
-                <label>시간제한:</label>
-                <select id="time-limit-select">
-                    <option value="40">40초</option>
-                    <option value="30">30초</option>
-                    <option value="20">20초</option>
-                </select>
-            </div>
-            <div class="setting-group">
-                <label>하트수:</label>
-                <select id="heart-count-select">
-                    <option value="1">1개</option>
-                    <option value="2">2개</option>
-                    <option value="3">3개</option>
-                    <option value="4">4개</option>
-                </select>
-            </div>
-            <div class="setting-group">
-                <label>숫자 범위(시작,끝):</label>
-                <input type="number" id="range-start" placeholder="시작 숫자" value="1"/>
-                <input type="number" id="range-end" placeholder="끝 숫자" value="50"/>
-            </div>
-            <button class="btn" id="start-game-button">소수 전쟁 시작</button>
         </div>
 
         <!-- 게임 화면 -->
         <div class="screen" id="game-screen">
             <div class="info-panel">
-                <div class="hearts" id="hearts-container"></div>
-                <div class="timer" id="timer-container"></div>
-                <div class="score-panel">
-                    점수: <span id="score">0</span>
-                </div>
+                <div class="hearts" id="hearts-container">❤️❤️</div>
+                <div class="timer" id="timer-container">40초</div>
+                <div class="score-panel">점수: <span id="score">0</span></div>
             </div>
             <div class="board-container">
                 <div class="board" id="game-board"></div>
@@ -69,11 +72,15 @@
 
         <!-- 게임 오버 화면 -->
         <div class="screen" id="gameover-screen">
-            <h2>Game Over</h2>
-            <p>점수: <span id="final-score"></span></p>
-            <h3>상위 5 점수 기록</h3>
-            <ol id="high-scores-list"></ol>
-            <button class="btn" id="restart-button">게임 다시하기</button>
+            <div class="gameover-content">
+                <h2>Game Over</h2>
+                <p class="final-score">점수: <span id="final-score">0</span></p>
+                <div class="high-scores">
+                    <h3>상위 5 점수 기록</h3>
+                    <ol id="high-scores-list"></ol>
+                </div>
+                <button class="btn" id="restart-button">게임 다시하기</button>
+            </div>
         </div>
     </div>
     <script src="script.js"></script>
