@@ -143,8 +143,8 @@ html, body {
 }
 
 .board-container {
-    width: 600px; /* 원하는 보드 전체 너비를 지정 */
-    height: 600px; /* 높이도 동일하게 주어 정사각형 보드 유지 */
+    width: 450px; /* 원하는 보드 전체 너비를 지정 */
+    height: 450px; /* 높이도 동일하게 주어 정사각형 보드 유지 */
     margin: 0 auto; /* 중앙정렬 (선택사항) */
     box-sizing: border-box;
 }
