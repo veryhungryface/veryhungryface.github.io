@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', () => {
     // 화면 전환 및 요소 참조
     const startScreen = document.getElementById('start-screen');
@@ -37,15 +38,22 @@ document.addEventListener('DOMContentLoaded', () => {
     let numbersArray = [];        // 게임판에 표시될 숫자들
     let primeCheckMap = {};       // 소수 체크 맵
     let clickedNumbers = new Set(); // 클릭된 숫자들
+    let gameActive = false;       // 게임 활성화 상태
 
-    // 시작화면 강제 표시
-    startScreen.style.display = 'flex';
-    startScreen.classList.add('active');
+    // 화면 전환 함수
+    function showScreen(screenToShow) {
+        [startScreen, settingsScreen, gameScreen, gameoverScreen].forEach(screen => {
+            if(screen) screen.classList.remove('active');
+        });
+        screenToShow.classList.add('active');
+    }
+
+    // 초기 화면 표시
+    showScreen(startScreen);
 
     // 시작화면 -> 설정화면
     startButton.addEventListener('click', () => {
-        startScreen.classList.remove('active');
-        settingsScreen.classList.add('active');
+        showScreen(settingsScreen);
     });
 
     // 설정화면 -> 게임화면
@@ -60,28 +68,27 @@ document.addEventListener('DOMContentLoaded', () => {
         numberRangeEnd = parseInt(rangeEndInput.value);
 
         initGame();
-        settingsScreen.classList.remove('active');
-        gameScreen.classList.add('active');
+        showScreen(gameScreen);
     });
 
     // 게임오버 -> 설정화면
     restartButton.addEventListener('click', () => {
-        gameoverScreen.classList.remove('active');
-        settingsScreen.classList.add('active');
+        showScreen(settingsScreen);
         stopTimer();
     });
 
     // 더이상 소수없음 버튼 클릭
     noMorePrimesBtn.addEventListener('click', () => {
-        if (!hasPrimeInBoard()) {   // 소수가 없으면
-            currentScore += 30;      // 30점 추가
+        if (!gameActive) return;
+        
+        if (!hasPrimeInBoard()) {
+            currentScore += 30;
             scoreDisplay.textContent = currentScore;
-            currentStage++;         // 스테이지 증가
-            resetBoard();          // 보드 재설정
+            currentStage++;
+            resetBoard();
         } else {
-            loseHeart();          // 하트 감소
+            loseHeart();
         }
-        resetTimer();
     });
 
     // 입력값 검증
@@ -107,6 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 게임 초기화
     function initGame() {
+        gameActive = true;
         currentScore = 0;
         currentStage = 1;
         heartsRemaining = heartCount;
@@ -114,8 +122,12 @@ document.addEventListener('DOMContentLoaded', () => {
         
         scoreDisplay.textContent = '0';
         initHearts();
+
+        gameBoard.innerHTML = '';
         generateNumbersArray();
         createBoard();
+        
+        if (timer) stopTimer();
         startTimer();
     }
 
@@ -128,6 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function resetBoard() {
         stopTimer();
         gameBoard.innerHTML = '';
+        clickedNumbers.clear();
         generateNumbersArray();
         createBoard();
         startTimer();
@@ -154,9 +167,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 게임판 생성
     function createBoard() {
-        gameBoard.innerHTML = '';
+        gameBoard.style.display = 'grid';
         gameBoard.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
-        gameBoard.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
         
         numbersArray.forEach(number => {
             const cell = document.createElement('div');
@@ -170,17 +182,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 숫자 클릭 처리
     function onNumberClick(e) {
+        if (!gameActive) return;
+        
         const cell = e.target;
         const num = parseInt(cell.dataset.number);
 
         if (clickedNumbers.has(num)) return;
         clickedNumbers.add(num);
 
-        if (primeCheckMap[num]) {         // 소수이면
+        if (primeCheckMap[num]) {
             cell.style.backgroundColor = 'blue';
             currentScore += 10;
             scoreDisplay.textContent = currentScore;
-        } else {                         // 합성수이면
+        } else {
             cell.style.backgroundColor = 'red';
             loseHeart();
         }
@@ -198,10 +212,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 게임 종료
     function endGame() {
+        gameActive = false;
         stopTimer();
         saveHighScore(currentScore);
-        gameScreen.classList.remove('active');
-        gameoverScreen.classList.add('active');
+        showScreen(gameoverScreen);
         finalScoreDisplay.textContent = currentScore;
         displayHighScores();
     }
