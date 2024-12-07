@@ -339,7 +339,7 @@ function displayHighScores() {
                     <span class="score">${info.score}점</span>
                 </div>
                 <div class="score-details">
-                    ${info.mode} 모드 / ${info.range} / ${info.timeLimit}초 / ❤️${info.hearts}
+                    ${info.mode} 모드 / 범위:${info.range} / ${info.timeLimit}초 제한/ ❤️x${info.initialHearts}}
                 </div>
                 <div class="score-date">${info.date}</div>
             </li>
