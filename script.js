@@ -308,23 +308,30 @@ function saveHighScore(score) {
 function displayHighScores() {
     try {
         const scores = JSON.parse(localStorage.getItem('highScores') || '[]');
+        const highScoresList = document.getElementById('high-scores-list');
+        
+        if (scores.length === 0) {
+            highScoresList.innerHTML = '<div class="high-score-item">기록이 없습니다</div>';
+            return;
+        }
+
         highScoresList.innerHTML = scores.map((gameInfo, index) => `
             <li class="high-score-item">
-                <div class="score-rank">${index + 1}위</div>
-                <div class="score-info">
-                    <div class="score-main">${gameInfo.score}점</div>
-                    <div class="score-details">
-                        ${gameInfo.mode}x${gameInfo.mode} 모드 | 
-                        범위: ${gameInfo.range} | 
-                        시간: ${gameInfo.timeLimit}초 | 
-                        하트: ${gameInfo.hearts}개
-                    </div>
-                    <div class="score-date">${gameInfo.date}</div>
+                <div class="score-rank">${index + 1}등</div>
+                <div class="score-main">${gameInfo.score}점</div>
+                <div class="score-details">
+                    ${gameInfo.mode}x${gameInfo.mode} | 
+                    ${gameInfo.range} | 
+                    ${gameInfo.timeLimit}초 | 
+                    ❤️${gameInfo.hearts}
                 </div>
+                <div class="score-date">${gameInfo.date}</div>
             </li>
         `).join('');
     } catch (error) {
         console.error('Failed to display high scores:', error);
+        const highScoresList = document.getElementById('high-scores-list');
+        highScoresList.innerHTML = '<div class="high-score-item">점수를 불러올 수 없습니다</div>';
     }
 }
 });
