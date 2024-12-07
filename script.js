@@ -286,17 +286,15 @@ document.addEventListener('DOMContentLoaded', () => {
 // 최고점수 저장
 function saveHighScore(score) {
     try {
-        // 게임 정보 객체 생성
         const gameInfo = {
             score: score,
-            mode: `${state.mode}x${state.mode}`,
-            timeLimit: state.timeLimit,
-            hearts: state.hearts,
-            range: `${rangeStartInput.value}~${rangeEndInput.value}`,
+            mode: `${gameState.mode}x${gameState.mode}`,
+            timeLimit: gameState.timeLimit,
+            hearts: gameState.hearts,
+            range: `${settings.rangeStart.value}~${settings.rangeEnd.value}`,
             date: new Date().toLocaleDateString()
         };
 
-        // 로컬 스토리지에서 기존 점수들을 가져옴
         let scores = [];
         const savedScores = localStorage.getItem('highScores');
         if (savedScores) {
@@ -304,12 +302,8 @@ function saveHighScore(score) {
         }
 
         scores.push(gameInfo);
-        // 점수 기준으로 내림차순 정렬
         scores.sort((a, b) => b.score - a.score);
-        // 상위 5개만 유지
         scores = scores.slice(0, 5);
-        
-        // 저장
         localStorage.setItem('highScores', JSON.stringify(scores));
     } catch (error) {
         console.error('점수 저장 실패:', error);
