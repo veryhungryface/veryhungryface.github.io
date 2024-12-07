@@ -159,8 +159,8 @@ html, body {
     grid-template-columns: repeat(var(--mode), minmax(0, 1fr));
     grid-template-rows: repeat(var(--mode), minmax(0, 1fr));
     gap: 3px;
-    width: 95%;
-    height: 95%;
+    width: 70%;
+    height: 70%;
 }
 
 .cell {
