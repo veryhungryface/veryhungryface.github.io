@@ -44,8 +44,12 @@ html, body {
 #start-screen {
     /* 여기에서는 display:flex;를 직접 지정하지 않음 */
     position: relative;
-    /* background, 오버레이 설정은 그대로 */
-    background: url('...') no-repeat center center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* 제시한 이미지 URL 사용 */
+    background: url('https://i.ibb.co/m5x4PhV/88-A780-C7-A4-D5-48-C9-A080-B859-E482091-A.png') no-repeat center center;
     background-size: cover;
 }
 
