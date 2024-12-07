@@ -166,9 +166,54 @@ html, body {
     margin: 1rem 0;
 }
 
+/* 최고 점수 리스트 스타일 */
 #high-scores-list {
-    list-style-position: inside;
-    margin: 1rem 0;
+    list-style: none;
+    padding: 0;
+    width: 100%;
+    max-width: 500px;
+}
+
+.high-score-item {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 8px;
+    transition: background 0.3s;
+}
+
+.high-score-item:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.score-rank {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-right: 15px;
+    color: #1e88e5;
+}
+
+.score-info {
+    flex: 1;
+}
+
+.score-main {
+    font-size: 1.4em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.score-details {
+    font-size: 0.9em;
+    color: #aaa;
+    margin-bottom: 3px;
+}
+
+.score-date {
+    font-size: 0.8em;
+    color: #888;
 }
 
 /* 반응형 스타일 */
