@@ -124,7 +124,7 @@ html, body {
 
 /* 게임 화면 */
 #game-screen {
-    padding: 2rem;
+    padding: 1rem;
 }
 
 .info-panel {
@@ -143,9 +143,9 @@ html, body {
 }
 
 .board-container {
-    width: min(80vw, 500px);
-    height: min(80vw, 500px); /* 정사각형 형태를 유지하기 위해 높이도 같은 규칙 적용 */
-    margin: 0 auto;
+    width: min(95vw, 500px);
+    height: min(95vw, 500px); /* 정사각형 형태를 유지하기 위해 높이도 같은 규칙 적용 */
+    margin: 0;
     box-sizing: border-box;
 
     /* 중앙 정렬을 위해 Flex 사용 */
@@ -214,7 +214,7 @@ html, body {
 .high-scores-container {
     width: 100%;
     margin: 2rem 0;
-    max-height: 200px; 
+    max-height: 400px; 
     overflow-y: auto;
 }
 
