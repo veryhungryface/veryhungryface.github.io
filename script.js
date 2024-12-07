@@ -1,4 +1,4 @@
-해document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
     const screens = {
         start: document.getElementById('start-screen'),
         settings: document.getElementById('settings-screen'),
