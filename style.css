@@ -155,27 +155,26 @@ html, body {
 }
 
 #game-board {
+    display: grid;
+    grid-template-columns: repeat(var(--mode), minmax(0, 1fr));
+    grid-template-rows: repeat(var(--mode), minmax(0, 1fr));
+    gap: 5px;
     width: 95%;
     height: 95%;
-    background: #333; /* 보드 배경 등 원하는 스타일 적용 가능 */
-    border-radius: 8px;
-    box-sizing: border-box;
-    display: grid;
-    gap: 5px;
 }
 
 .cell {
-    /* width, height 제거 */
+    background: #444;
+    color: #fff;
     font-size: 1.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #444;
-    color: white;
-    cursor: pointer;
     border-radius: 4px;
     user-select: none;
     transition: all 0.3s ease;
+    min-width: 0; /* 셀 최소 폭 제한 해제 */
+    overflow: hidden; /* 텍스트나 내용이 넘칠 경우 숨김 */
 }
 
 .cell:hover {
