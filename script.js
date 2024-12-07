@@ -283,55 +283,67 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 최고점수 저장 함수 수정
+// 최고점수 저장
 function saveHighScore(score) {
     try {
+        // 게임 정보 객체 생성
         const gameInfo = {
             score: score,
-            mode: state.mode,
-            range: `${rangeStartInput.value}~${rangeEndInput.value}`,
-            date: new Date().toLocaleDateString(),
+            mode: `${state.mode}x${state.mode}`,
             timeLimit: state.timeLimit,
-            hearts: parseInt(heartCountSelect.value)
+            hearts: state.hearts,
+            range: `${rangeStartInput.value}~${rangeEndInput.value}`,
+            date: new Date().toLocaleDateString()
         };
 
-        const scores = JSON.parse(localStorage.getItem('highScores') || '[]');
+        // 로컬 스토리지에서 기존 점수들을 가져옴
+        let scores = [];
+        const savedScores = localStorage.getItem('highScores');
+        if (savedScores) {
+            scores = JSON.parse(savedScores);
+        }
+
         scores.push(gameInfo);
-        scores.sort((a, b) => b.score - a.score); // 점수 기준으로 정렬
-        localStorage.setItem('highScores', JSON.stringify(scores.slice(0, 5)));
+        // 점수 기준으로 내림차순 정렬
+        scores.sort((a, b) => b.score - a.score);
+        // 상위 5개만 유지
+        scores = scores.slice(0, 5);
+        
+        // 저장
+        localStorage.setItem('highScores', JSON.stringify(scores));
     } catch (error) {
-        console.error('Failed to save high score:', error);
+        console.error('점수 저장 실패:', error);
     }
 }
 
-// 최고점수 표시 함수 수정
+// 최고점수 표시
 function displayHighScores() {
     try {
-        const scores = JSON.parse(localStorage.getItem('highScores') || '[]');
         const highScoresList = document.getElementById('high-scores-list');
-        
+        const scores = JSON.parse(localStorage.getItem('highScores') || '[]');
+
         if (scores.length === 0) {
-            highScoresList.innerHTML = '<div class="high-score-item">기록이 없습니다</div>';
+            highScoresList.innerHTML = '<div class="no-scores">기록이 없습니다</div>';
             return;
         }
 
-        highScoresList.innerHTML = scores.map((gameInfo, index) => `
+        const html = scores.map((info, index) => `
             <li class="high-score-item">
-                <div class="score-rank">${index + 1}등</div>
-                <div class="score-main">${gameInfo.score}점</div>
-                <div class="score-details">
-                    ${gameInfo.mode}x${gameInfo.mode} | 
-                    ${gameInfo.range} | 
-                    ${gameInfo.timeLimit}초 | 
-                    ❤️${gameInfo.hearts}
+                <div class="score-header">
+                    <span class="rank">${index + 1}등</span>
+                    <span class="score">${info.score}점</span>
                 </div>
-                <div class="score-date">${gameInfo.date}</div>
+                <div class="score-details">
+                    ${info.mode} 모드 / ${info.range} / ${info.timeLimit}초 / ❤️${info.hearts}
+                </div>
+                <div class="score-date">${info.date}</div>
             </li>
         `).join('');
+
+        highScoresList.innerHTML = html;
     } catch (error) {
-        console.error('Failed to display high scores:', error);
-        const highScoresList = document.getElementById('high-scores-list');
-        highScoresList.innerHTML = '<div class="high-score-item">점수를 불러올 수 없습니다</div>';
+        console.error('점수 표시 실패:', error);
+        highScoresList.innerHTML = '<div class="error">점수를 불러올 수 없습니다</div>';
     }
 }
 });
