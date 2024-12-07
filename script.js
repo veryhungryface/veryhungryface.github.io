@@ -283,25 +283,48 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function saveHighScore(score) {
-        try {
-            const scores = JSON.parse(localStorage.getItem('highScores') || '[]');
-            scores.push(score);
-            scores.sort((a, b) => b - a);
-            localStorage.setItem('highScores', JSON.stringify(scores.slice(0, 5)));
-        } catch (error) {
-            console.error('Failed to save high score:', error);
-        }
-    }
+    // 최고점수 저장 함수 수정
+function saveHighScore(score) {
+    try {
+        const gameInfo = {
+            score: score,
+            mode: state.mode,
+            range: `${rangeStartInput.value}~${rangeEndInput.value}`,
+            date: new Date().toLocaleDateString(),
+            timeLimit: state.timeLimit,
+            hearts: parseInt(heartCountSelect.value)
+        };
 
-    function displayHighScores() {
-        try {
-            const scores = JSON.parse(localStorage.getItem('highScores') || '[]');
-            gameElements.highScores.innerHTML = scores
-                .map(score => `<li>${score}</li>`)
-                .join('');
-        } catch (error) {
-            console.error('Failed to display high scores:', error);
-        }
+        const scores = JSON.parse(localStorage.getItem('highScores') || '[]');
+        scores.push(gameInfo);
+        scores.sort((a, b) => b.score - a.score); // 점수 기준으로 정렬
+        localStorage.setItem('highScores', JSON.stringify(scores.slice(0, 5)));
+    } catch (error) {
+        console.error('Failed to save high score:', error);
     }
+}
+
+// 최고점수 표시 함수 수정
+function displayHighScores() {
+    try {
+        const scores = JSON.parse(localStorage.getItem('highScores') || '[]');
+        highScoresList.innerHTML = scores.map((gameInfo, index) => `
+            <li class="high-score-item">
+                <div class="score-rank">${index + 1}위</div>
+                <div class="score-info">
+                    <div class="score-main">${gameInfo.score}점</div>
+                    <div class="score-details">
+                        ${gameInfo.mode}x${gameInfo.mode} 모드 | 
+                        범위: ${gameInfo.range} | 
+                        시간: ${gameInfo.timeLimit}초 | 
+                        하트: ${gameInfo.hearts}개
+                    </div>
+                    <div class="score-date">${gameInfo.date}</div>
+                </div>
+            </li>
+        `).join('');
+    } catch (error) {
+        console.error('Failed to display high scores:', error);
+    }
+}
 });
