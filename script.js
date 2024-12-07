@@ -160,6 +160,7 @@ buttons.clearRecords.addEventListener('click', () => {
     function createBoard() {
         gameElements.board.innerHTML = '';
         gameElements.board.style.gridTemplateColumns = `repeat(${gameState.mode}, 1fr)`;
+        gameElements.board.style.gridTemplateRows = `repeat(${gameState.mode}, 1fr)`;
         
         gameState.numbers.forEach(num => {
             const cell = document.createElement('div');
@@ -339,7 +340,7 @@ function displayHighScores() {
                     <span class="score">${info.score}점</span>
                 </div>
                 <div class="score-details">
-                    ${info.mode} 모드 / 범위:${info.range} / ${info.timeLimit}초 제한/ ❤️x${info.initialHearts}}
+                    ${info.mode} 모드 / 범위:${info.range} / ${info.timeLimit}초 제한/ ❤️x${info.initialHearts}
                 </div>
                 <div class="score-date">${info.date}</div>
             </li>
