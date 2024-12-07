@@ -54,18 +54,7 @@ html, body {
     background-size: cover;
 }
 
-#start-screen::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.5); /* 반투명 검은 오버레이 */
-    z-index: 1;
-}
 
-#start-screen .game-title,
-#start-screen .btn {
-    z-index: 2; /* 오버레이 위로 올리기 */
-}
 
 .game-title {
     font-size: 4rem;
