@@ -28,8 +28,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let gridSize = 3;             // 게임 모드(3x3, 4x4, 5x5)
     let timeLimit = 40;           // 시간제한
     let heartCount = 2;           // 하트 개수
-    let numberRangeStart = 1;     // 숫자 범위 시작
-    let numberRangeEnd = 50;      // 숫자 범위 끝
+    let numberRangeStart = 100;     // 숫자 범위 시작
+    let numberRangeEnd = 500;      // 숫자 범위 끝
     let timer;                    // 타이머
     let currentTime;              // 현재 시간
     let currentScore = 0;         // 현재 점수
