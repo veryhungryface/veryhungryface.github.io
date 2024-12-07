@@ -56,31 +56,91 @@ html, body {
 #start-screen .btn {
     z-index: 2; /* 오버레이 위로 올리기 */
 
+/* 타이틀 스타일링 */
 .game-title {
-    font-size: 4rem;
+    font-size: clamp(2rem, 5vw, 4rem);
     color: #ffffff;
     margin-bottom: 3rem;
-    font-weight: bold;
-    letter-spacing: 5px;
+    font-weight: 800;
+    letter-spacing: 8px;
     text-align: center;
-    text-shadow: 2px 2px 4px #000;
+    text-transform: uppercase;
+    text-shadow: 
+        2px 2px 0 #000,
+        -2px -2px 0 #000,
+        2px -2px 0 #000,
+        -2px 2px 0 #000,
+        0 0 20px rgba(0,0,0,0.5);
+    animation: titleFloat 3s ease-in-out infinite;
+    position: relative;
 }
 
+/* 타이틀 호버 효과 */
+.game-title:hover {
+    transform: scale(1.02);
+    transition: transform 0.3s ease;
+}
+
+/* 버튼 스타일링 */
 .btn {
-    background: #1e88e5;
+    background: linear-gradient(45deg, #1e88e5, #1565c0);
     color: #ffffff;
-    padding: 1rem 2rem;
+    padding: 1.2rem 2.5rem;
     border: none;
     cursor: pointer;
     font-size: 1.2rem;
-    border-radius: 5px;
-    margin-top: 1rem;
-    transition: background 0.3s ease;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    font-weight: 600;
+    border-radius: 8px;
+    margin-top: 1.5rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
+/* 버튼 호버 효과 */
 .btn:hover {
-    background: #1565c0;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    background: linear-gradient(45deg, #1976d2, #1565c0);
+}
+
+/* 버튼 활성화 효과 */
+.btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* 버튼 물결 효과 */
+.btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300px;
+    height: 300px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    transition: transform 0.6s, opacity 0.6s;
+}
+
+.btn:hover::after {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+}
+
+/* 타이틀 플로팅 애니메이션 */
+@keyframes titleFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
 /* 설정 화면 */
@@ -268,9 +328,15 @@ html, body {
 }
 
 /* 반응형 디자인 */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
     .game-title {
-        font-size: 3rem;
+        font-size: clamp(1.5rem, 4vw, 3rem);
+        letter-spacing: 4px;
+    }
+    
+    .btn {
+        padding: 1rem 2rem;
+        font-size: 1rem;
     }
 
     .info-panel {
