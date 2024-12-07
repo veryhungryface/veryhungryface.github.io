@@ -44,7 +44,6 @@ html, body {
 #start-screen {
     /* 여기에서는 display:flex;를 직접 지정하지 않음 */
     position: relative;
-    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
