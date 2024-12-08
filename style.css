@@ -151,7 +151,7 @@ html, body {
     align-items: center; /* 가로 중앙 정렬 */
     gap: 20px; /* 요소 간 간격 */
     padding: 20px; /* 화면 내부 여백 */
-    width: 90%;
+    width: 100%;
 }
 
 .settings-wrapper {
@@ -159,7 +159,7 @@ html, body {
     background: #1e1e1e; /* 어두운 배경색 */
     padding: 20px; /* 내부 여백 */
     border-radius: 10px; /* 둥근 테두리 */
-    width: 90%; /* 화면 너비의 90% */
+    width: 100%; /* 화면 너비의 90% */
     max-width: 400px; /* 최대 너비 */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* 그림자 효과 */
 }
@@ -281,11 +281,11 @@ button#start-game-button:hover {
 }
 
 .gameover-content {
-    max-height: 90vh; /* 화면 높이의 80% 정도로 제한 */
+    max-height: 95vh; /* 화면 높이의 80% 정도로 제한 */
     overflow-y: auto; /* 수직 스크롤 활성화 */
     padding: 2rem;
     border-radius: 10px;
-    width: 90%;
+    width: 100%;
     max-width: 500px;
     text-align: center;
     background: #1e1e1e;
