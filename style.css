@@ -43,7 +43,7 @@ html, body {
 /* 시작 화면 */
 #start-screen {
     position: relative;
-    display: flex;
+    display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
