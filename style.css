@@ -218,7 +218,7 @@ button#start-game-button:hover {
 .info-panel {
     display: flex;
     justify-content: space-between;
-    width: 80%;
+    width: 95%;
     max-width: 600px;
     margin-bottom: 0.1rem;
     background: rgba(255, 255, 255, 0.1);
@@ -231,7 +231,7 @@ button#start-game-button:hover {
 }
 
 .board-container {
-    width: 80%;
+    width: 95%;
     max-width: 600px;
     aspect-ratio: 1 / 1;
     margin: 0 auto; /* 중앙정렬 (선택사항) */
@@ -257,7 +257,7 @@ button#start-game-button:hover {
 
 .cell {
     /* width, height 제거 */
-    font-size: clamp(1rem, 6vw, 7rem);
+    font-size: clamp(1rem, 4vw, 4rem);
     display: flex;
     align-items: center;
     justify-content: center;
