@@ -55,6 +55,7 @@ html, body {
 #start-screen .game-title,
 #start-screen .btn {
     z-index: 2; /* 오버레이 위로 올리기 */
+}
 
 /* 타이틀 스타일링 */
 .game-title {
