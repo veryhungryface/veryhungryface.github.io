@@ -357,11 +357,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const html = scores.map((info, index) => `
                 <li class="high-score-item">
                     <div class="score-header">
-                        <span class="rank">${index + 1}등</span>
-                        <span class="score">${info.score}점</span>
+                        <span class="rank">Top ${index + 1}</span>
+                        <span class="score">${info.score}</span>
                     </div>
                     <div class="score-details">
-                        ${info.mode} 모드 / 범위:${info.range} / ${info.timeLimit}초 제한/ ❤️x${info.initialHearts}
+                        🏁${info.mode} / ⏱️${info.timeLimit} / ❤️x${info.initialHearts} / 🔢${info.range} 
                     </div>
                     <div class="score-date">${info.date}</div>
                 </li>
