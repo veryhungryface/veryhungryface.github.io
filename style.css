@@ -56,11 +56,10 @@ html, body {
 #start-screen .btn {
     z-index: 2; /* 오버레이 위로 올리기 */
 }
-
 /* 타이틀 스타일링 */
 .game-title {
-    font-size: clamp(4rem, 5vw, 6rem);
-    color: #d50505;
+    font-size: clamp(2rem, 5vw, 4rem);
+    color: #ffffff;
     margin-bottom: 3rem;
     font-weight: 800;
     letter-spacing: 8px;
@@ -86,7 +85,7 @@ html, body {
 .btn {
     background: linear-gradient(45deg, #1e88e5, #1565c0);
     color: #ffffff;
-    padding: 1.2rem 2.5rem;
+    padding: 0.4rem 2.0rem;
     border: none;
     cursor: pointer;
     font-size: 1.2rem;
@@ -156,6 +155,7 @@ html, body {
 }
 
 .settings-wrapper {
+    align-items: center; /* 가로 중앙 정렬 */
     background: #1e1e1e; /* 어두운 배경색 */
     padding: 20px; /* 내부 여백 */
     border-radius: 10px; /* 둥근 테두리 */
@@ -186,16 +186,22 @@ html, body {
     border-radius: 4px; /* 둥근 테두리 */
     font-size: 1rem; /* 글꼴 크기 */
 }
+.container {
+    display: flex;            /* Enable Flexbox */
+    justify-content: center;  /* Center horizontally */
+    align-items: center;      /* Center vertically */
+    height: 5vh;            /* Set height to viewport height, adjust as needed */
+}
 
 button#start-game-button {
     background: #1e88e5; /* 버튼 배경색 */
     color: white; /* 버튼 텍스트 색상 */
-    padding: 1rem 2rem; /* 버튼 내부 여백 */
+    padding: 0.4rem 2rem; /* 버튼 내부 여백 */
     border: none; /* 테두리 제거 */
     cursor: pointer; /* 클릭 가능한 커서 */
     font-size: 1rem; /* 버튼 글꼴 크기 */
     border-radius: 5px; /* 둥근 테두리 */
-    margin-top: 1rem; /* 위쪽 여백 */
+    margin-top: 0.5rem; /* 위쪽 여백 */
     transition: background 0.3s ease; /* 배경색 변경 효과 */
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* 텍스트 그림자 */
 }
@@ -214,7 +220,7 @@ button#start-game-button:hover {
     justify-content: space-between;
     width: 80%;
     max-width: 600px;
-    margin-bottom: 2rem;
+    margin-bottom: 0.1rem;
     background: rgba(255, 255, 255, 0.1);
     padding: 1rem;
     border-radius: 8px;
@@ -225,10 +231,17 @@ button#start-game-button:hover {
 }
 
 .board-container {
-    width: 300px; /* 원하는 보드 전체 너비를 지정 */
-    height: 300px; /* 높이도 동일하게 주어 정사각형 보드 유지 */
+    width: 80%;
+    max-width: 600px;
+    aspect-ratio: 1 / 1;
     margin: 0 auto; /* 중앙정렬 (선택사항) */
     box-sizing: border-box;
+}
+
+.board-container::before {
+    content: '';
+    display: block;
+    padding-top: 10%; /* 너비와 동일한 높이를 유지하기 위해 */
 }
 
 #game-board {
@@ -244,7 +257,7 @@ button#start-game-button:hover {
 
 .cell {
     /* width, height 제거 */
-    font-size: 1.5rem;
+    font-size: clamp(1rem, 6vw, 7rem);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -353,10 +366,10 @@ button#start-game-button:hover {
     color: #888;
 }
 
-/* 반응형 디자인 */
-@media (max-width: 768px) {
+/* 반응형 디자인
+@media (max-width: 300px) {
     .game-title {
-        font-size: clamp(1.5rem, 4vw, 3rem);
+        font-size: clamp(3rem, 4vw, 3rem);
         letter-spacing: 4px;
     }
     
@@ -390,7 +403,7 @@ button#start-game-button:hover {
         align-items: flex-start;
         gap: 5px;
     }
-}
+} */
 
 /* 애니메이션 */
 @keyframes fadeIn {
