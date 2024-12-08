@@ -281,7 +281,8 @@ document.addEventListener('DOMContentLoaded', () => {
             updateUI();
             
             if (gameState.timeLeft <= 0) {
-                endGame();
+                gameState.hearts--;
+                resetTimer()
             }
         }, 1000);
     }
