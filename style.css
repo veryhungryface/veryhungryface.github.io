@@ -58,7 +58,7 @@ html, body {
 
 /* 타이틀 스타일링 */
 .game-title {
-    font-size: clamp(2rem, 5vw, 4rem);
+    font-size: clamp(20rem, 5vw, 40rem);
     color: #ffffff;
     margin-bottom: 3rem;
     font-weight: 800;
