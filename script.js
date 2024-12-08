@@ -77,8 +77,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function showScreen(screenName) {
-        Object.values(screens).forEach(screen => screen.classList.remove('active'));
-        screens[screenName].classList.add('active');
+    Object.values(screens).forEach(screen => {
+        screen.classList.remove('active'); // 모든 화면 숨김
+        screen.style.display = 'none';    // 안전하게 display:none 적용
+    });
+    screens[screenName].classList.add('active'); // 선택된 화면만 활성화
+    screens[screenName].style.display = 'flex'; // 선택된 화면 표시
+
         
         if (screenName === 'start') {
             resetGameState();
