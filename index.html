@@ -10,20 +10,20 @@
     <div class="game-container">
         <!-- 시작 화면 -->
         <div class="screen" id="start-screen">
-            <h1 class="game-title">소수전쟁</h1>
-            <button class="btn" id="start-button">게임시작</button>
+            <h1 class="game-title">PRIME WAR</h1>
+            <button class="btn" id="start-button">START</button>
         </div>
 
         <!-- 설정 화면 -->
         <div class="screen" id="settings-screen">
             <div class="settings-wrapper">
-                <h2>게임 설정</h2>
+                <h2>Setting</h2>
                 <div class="setting-group">
-                    <label>게임모드:</label>
+                    <label>게임판:</label>
                     <select id="game-mode-select">
-                        <option value="3">3 x 3 모드</option>
-                        <option value="4">4 x 4 모드</option>
-                        <option value="5">5 x 5 모드</option>
+                        <option value="3">3 x 3</option>
+                        <option value="4">4 x 4</option>
+                        <option value="5">5 x 5</option>
                     </select>
                 </div>
                 <div class="setting-group">
@@ -35,7 +35,7 @@
                     </select>
                 </div>
                 <div class="setting-group">
-                    <label>하트수:</label>
+                    <label>하트:</label>
                     <select id="heart-count-select">
                         <option value="1">1개</option>
                         <option value="2">2개</option>
@@ -51,7 +51,9 @@
                         <select id="range-end-select"></select>
                     </div>
                 </div>
-                <button class="btn" id="start-game-button">소수 전쟁 시작</button>
+                <div class="container">
+                    <button id="start-game-button">Start Game</button>
+                </div>
             </div>
         </div>
 
@@ -66,7 +68,7 @@
                 <div class="board" id="game-board"></div>
             </div>
             <div class="control-panel">
-                <button class="btn" id="no-more-primes-btn">더이상 소수 없음</button>
+                <button class="btn" id="no-more-primes-btn">no prime</button>
             </div>
         </div>
 
@@ -74,9 +76,8 @@
         <div class="screen" id="gameover-screen">
             <div class="gameover-content">
                 <h2>Game Over</h2>
-                <div class="final-score">점수: <span id="final-score">0</span></div>
+                <div class="final-score">SCORE: <span id="final-score">0</span></div>
                 <div class="high-scores-container">
-                    <h3>TOP5 기록</h3>
                     <ol class="high-scores-list" id="high-scores-list"></ol>
                 </div>
                 <button class="btn" id="restart-button">게임 다시하기</button>
