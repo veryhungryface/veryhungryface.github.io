@@ -282,7 +282,11 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (gameState.timeLeft <= 0) {
                 gameState.hearts--;
-                resetTimer()
+                resetTimer();
+                updateUI(); // UI 업데이트
+                if (gameState.hearts <= 0) {
+                    endGame(); // 하트가 0개일 때 게임 종료
+                }
             }
         }, 1000);
     }
