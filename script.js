@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+    // 서버 URL 설정
+    const API_URL = 'http://107.172.92.109:8080/api';
+
+
     const screens = {
         start: document.getElementById('start-screen'),
         settings: document.getElementById('settings-screen'),
@@ -13,6 +18,18 @@ document.addEventListener('DOMContentLoaded', () => {
         restart: document.getElementById('restart-button'),
         clearRecords: document.getElementById('clear-records-button')
     };
+
+    const modeButtons = document.querySelectorAll('.mode-btn');
+    modeButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // 모든 버튼에서 selected 클래스 제거
+            modeButtons.forEach(b => b.classList.remove('selected'));
+            // 클릭된 버튼에 selected 클래스 추가
+            btn.classList.add('selected');
+            // 해당 모드의 점수 표시
+            displayHighScores(btn.dataset.mode);
+        });
+    });
 
     const gameElements = {
         board: document.getElementById('game-board'),
@@ -301,9 +318,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (gameState.timer) clearInterval(gameState.timer);
         
         gameElements.finalScore.textContent = gameState.score;
-        saveHighScore(gameState.score);
-        displayHighScores();
-        showScreen('gameover');
+        // saveHighScore(gameState.score) 제거하고 새로운 함수로 대체
+        checkAndSaveHighScore(gameState.score);
+        showScreen('gameover'); // showGameOverScreen() 대신 showScreen('gameover') 사용
     }
 
     function isPrime(num) {
@@ -321,61 +338,296 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function saveHighScore(score) {
+ 
+    async function handleGameOver() {
+        const finalScore = parseInt(document.getElementById('score').text);
+        await checkAndSaveHighScore(finalScore);
+        showGameOverScreen();
+    }
+
+    async function checkAndSaveHighScore(score) {
         try {
             const gameInfo = {
                 score: score,
                 mode: `${gameState.mode}x${gameState.mode}`,
-                range: `${settings.rangeStartSelect.value}~${settings.rangeEndSelect.value}`,
                 timeLimit: gameState.timeLimit,
-                initialHearts: gameState.initialHearts,
-                hearts: gameState.hearts,
-                date: new Date().toLocaleDateString()
+                hearts: gameState.initialHearts,
+                range: `${settings.rangeStartSelect.value}~${settings.rangeEndSelect.value}`,
             };
-
-            let scores = [];
-            const savedScores = localStorage.getItem('highScores');
-            if (savedScores) {
-                scores = JSON.parse(savedScores);
+    
+            const checkResponse = await fetch(`${API_URL}/scores/check`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(gameInfo)
+            });
+    
+            if (!checkResponse.ok) {
+                throw new Error('서버 응답 오류');
             }
-
-            scores.push(gameInfo);
-            scores.sort((a, b) => b.score - a.score);
-            scores = scores.slice(0, 5);
-
-            localStorage.setItem('highScores', JSON.stringify(scores));
+    
+            const checkResult = await checkResponse.json();
+    
+            if (checkResult.isTopScore) {
+                const name = await showNameInputDialog(score);
+                if (name) {
+                    // 여기서 range 값을 올바르게 설정
+                    await saveScore({
+                        ...gameInfo,
+                        name: name
+                    });
+                }
+            }
+    
+            await displayHighScores();
         } catch (error) {
-            console.error('점수 저장 실패:', error);
+            console.error('점수 처리 실패:', error);
         }
     }
 
-    function displayHighScores() {
+    function showNameInputDialog(score) {
+        return new Promise((resolve) => {
+            const dialog = document.createElement('div');
+            dialog.className = 'name-input-dialog';
+            dialog.innerHTML = `
+                <div class="dialog-content">
+                    <h2>축하합니다!</h2>
+                    <p>점수 ${score}점으로 TOP 10에 진입했습니다!</p>
+                    <input type="text" 
+                        id="playerName" 
+                        placeholder="이름을 입력하세요 (최대 4글자)" 
+                        maxlength="4">
+                    <button id="submit-name">확인</button>
+                </div>
+            `;
+    
+            document.body.appendChild(dialog);
+    
+            const submitButton = dialog.querySelector('#submit-name');
+            const nameInput = dialog.querySelector('#playerName');
+    
+            // 입력 시 실시간으로 길이 체크
+            nameInput.addEventListener('input', () => {
+                if (nameInput.value.length > 4) {
+                    nameInput.value = nameInput.value.slice(0, 4);
+                }
+            });
+    
+            submitButton.addEventListener('click', () => {
+                const name = nameInput.value.trim();
+                if (name) {
+                    if (name.length > 4) {
+                        alert('이름은 최대 4글자까지만 가능합니다.');
+                        return;
+                    }
+                    document.body.removeChild(dialog);
+                    resolve(name);
+                } else {
+                    alert('이름을 입력해주세요!');
+                }
+            });
+    
+            nameInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    submitButton.click();
+                }
+            });
+        });
+    }
+
+    async function saveScore(scoreData) {
+        try {
+            const response = await fetch(`${API_URL}/scores`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(scoreData)
+            });
+
+            if (!response.ok) {
+                throw new Error('점수 저장 실패');
+            }
+        } catch (error) {
+            console.error('점수 저장 오류:', error);
+        }
+    }
+
+    async function displayHighScores(specificMode = null) {
         try {
             const highScoresList = document.getElementById('high-scores-list');
-            const scores = JSON.parse(localStorage.getItem('highScores') || '[]');
-
+            
+            // 표시할 모드 결정
+            const displayMode = specificMode || `${gameState.mode}x${gameState.mode}`;
+            
+            // 버튼 상태 업데이트
+            const buttons = document.querySelectorAll('.mode-btn');
+            buttons.forEach(btn => {
+                btn.classList.toggle('selected', btn.dataset.mode === displayMode);
+            });
+    
+            // 해당 모드의 점수 가져오기
+            const response = await fetch(`${API_URL}/scores/top10/${displayMode}`);
+            
+            if (!response.ok) {
+                throw new Error('서버 응답 오류');
+            }
+            
+            const scores = await response.json();
+    
             if (scores.length === 0) {
-                highScoresList.innerHTML = '<div class="no-scores">기록이 없습니다</div>';
+                highScoresList.innerHTML = '<li class="no-scores">기록이 없습니다</li>';
                 return;
             }
-
+    
             const html = scores.map((info, index) => `
                 <li class="high-score-item">
                     <div class="score-header">
                         <span class="rank">Top ${index + 1}</span>
                         <span class="score">${info.score}</span>
+                        <span class="name">${info.name}</span>
                     </div>
                     <div class="score-details">
-                        🏁${info.mode} / ⏱️${info.timeLimit} / ❤️x${info.initialHearts} / 🔢${info.range} 
+                        <span class="mode" style="color: #4CAF50;">${info.mode}</span> |
+                        <span class="range">🎯 ${info.range}</span> |
+                        <span class="time">⏱️${info.timeLimit}초</span> |
+                        <span class="hearts" style="font-size: 0.9em;">❤️${info.hearts}</span>
                     </div>
-                    <div class="score-date">${info.date}</div>
                 </li>
             `).join('');
-
+    
             highScoresList.innerHTML = html;
         } catch (error) {
             console.error('점수 표시 실패:', error);
-            highScoresList.innerHTML = '<div class="error">점수를 불러올 수 없습니다</div>';
+            highScoresList.innerHTML = '<li class="error">점수를 불러올 수 없습니다</li>';
         }
     }
+    
+    // 추가 CSS 스타일
+    const style = document.createElement('style');
+    style.textContent = `
+        .mode-title {
+            color: white;
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+    `;
+    document.head.appendChild(style);
+
+    // 게임 오버 시 호출되는 함수 수정
+    function showGameOverScreen() {
+        hideAllScreens();
+        document.getElementById('gameover-screen').style.display = 'flex';
+        document.getElementById('final-score').textContent = score;
+        displayHighScores();
+    }
+
+    buttons.clearRecords.addEventListener('click', () => {
+        console.log('Clear Records button clicked');
+        
+        // 이미 존재하는 다이얼로그 제거
+        const existingDialog = document.getElementById('password-dialog');
+        if (existingDialog) existingDialog.remove();
+        const existingConfirm = document.getElementById('confirm-dialog');
+        if (existingConfirm) existingConfirm.remove();
+    
+        // 비밀번호 다이얼로그 생성
+        const passwordDialog = document.createElement('div');
+        passwordDialog.id = 'password-dialog';
+        passwordDialog.className = 'password-dialog';
+        passwordDialog.innerHTML = `
+            <div class="dialog-content">
+                <h3>비밀번호 입력</h3>
+                <input type="password" id="password-input" placeholder="비밀번호를 입력하세요">
+                <div class="button-group">
+                    <button id="submit-password">확인</button>
+                    <button id="cancel-password">취소</button>
+                </div>
+            </div>
+        `;
+    
+        // 확인 다이얼로그 생성
+        const confirmDialog = document.createElement('div');
+        confirmDialog.id = 'confirm-dialog';
+        confirmDialog.className = 'confirm-dialog';
+        confirmDialog.style.display = 'none';
+        confirmDialog.innerHTML = `
+            <div class="dialog-content">
+                <h3>확인</h3>
+                <p>정말 모든 기록을 초기화하시겠습니까?</p>
+                <div class="button-group">
+                    <button id="confirm-yes">예</button>
+                    <button id="confirm-no">아니오</button>
+                </div>
+            </div>
+        `;
+    
+        // 다이얼로그를 페이지에 추가
+        document.body.appendChild(passwordDialog);
+        document.body.appendChild(confirmDialog);
+    
+        const passwordInput = document.getElementById('password-input');
+    
+        // 비밀번호 확인 함수
+        const checkPassword = async () => {
+            const password = passwordInput.value;
+            if (password === '5082') {
+                passwordDialog.style.display = 'none';
+                confirmDialog.style.display = 'flex';
+            } else {
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message';
+                errorDiv.textContent = '비밀번호가 올바르지 않습니다.';
+                passwordDialog.querySelector('.dialog-content').appendChild(errorDiv);
+                setTimeout(() => errorDiv.remove(), 2000);
+            }
+        };
+    
+        // 기록 초기화 실행 함수
+        const deleteRecords = async () => {
+            try {
+                const response = await fetch(`${API_URL}/scores`, {
+                    method: 'DELETE'
+                });
+    
+                if (response.ok) {
+                    confirmDialog.style.display = 'none';
+                    passwordDialog.remove();
+                    confirmDialog.remove();
+                    displayHighScores();
+                    const successDiv = document.createElement('div');
+                    successDiv.className = 'success-message';
+                    successDiv.textContent = '기록이 초기화되었습니다.';
+                    document.body.appendChild(successDiv);
+                    setTimeout(() => successDiv.remove(), 2000);
+                }
+            } catch (error) {
+                console.error('기록 초기화 실패:', error);
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message';
+                errorDiv.textContent = '기록 초기화에 실패했습니다.';
+                confirmDialog.querySelector('.dialog-content').appendChild(errorDiv);
+                setTimeout(() => errorDiv.remove(), 2000);
+            }
+        };
+    
+        // 이벤트 리스너 설정
+        document.getElementById('submit-password').addEventListener('click', checkPassword);
+        document.getElementById('cancel-password').addEventListener('click', () => {
+            passwordDialog.remove();
+            confirmDialog.remove();
+        });
+        passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') checkPassword();
+        });
+    
+        document.getElementById('confirm-yes').addEventListener('click', deleteRecords);
+        document.getElementById('confirm-no').addEventListener('click', () => {
+            confirmDialog.style.display = 'none';
+            passwordDialog.remove();
+            confirmDialog.remove();
+        });
+    });
 });
