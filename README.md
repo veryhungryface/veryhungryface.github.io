@@ -1,1 +1,1 @@
-# veryhungryface.github.io
+# 소수를 판별하는 교육용 게임입니다. -B-
