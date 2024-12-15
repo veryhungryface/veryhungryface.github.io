@@ -504,6 +504,7 @@ function adjustFontSizes() {
     const finalScoreContainer = gameElements.finalScore.parentNode;
 
     if (gameState.mode === 'single') {
+        highScoresContainer.style.display = 'block';
         if (finalScoreContainer.childNodes[0]) {
             finalScoreContainer.childNodes[0].textContent = 'SCORE: ';
         } else {
@@ -513,6 +514,7 @@ function adjustFontSizes() {
         gameElements.finalScore.textContent = gameState.score;
         checkAndSaveHighScore(gameState.score);
     } else {
+        highScoresContainer.style.display = 'none';
         if (finalScoreContainer.childNodes[0]) {
             finalScoreContainer.childNodes[0].textContent = '';
         }
