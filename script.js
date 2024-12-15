@@ -419,6 +419,7 @@ function adjustFontSizes() {
         if (gameState.mode === 'single') {
             gameElements.hearts.style.display = 'block';
             gameElements.roundInfo.style.display = 'none';
+            gameElements.timer.style.display = 'none';
             gameElements.score.style.display = 'block';
             gameElements.score.textContent = `Score: ${gameState.score}`;
             gameElements.hearts.textContent = '❤️'.repeat(gameState.hearts);
@@ -426,6 +427,7 @@ function adjustFontSizes() {
             gameElements.playerBScore.style.display = 'none';
         } else {
             gameElements.hearts.style.display = 'none';
+            gameElements.timer.style.display = 'none';
             gameElements.score.style.display = 'none';
             gameElements.roundInfo.style.display = 'block';
             gameElements.playerAScore.style.display = 'block';
