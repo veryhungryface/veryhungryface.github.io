@@ -566,3 +566,9 @@ input:focus {
     font-weight: bold;
     text-shadow: 0 0 5px rgba(68, 68, 255, 0.3);
 }
+
+#game-screen .info-panel .single-score-container div#score {
+    color: #ff4444 !important;
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(255, 68, 68, 0.3);
+}
