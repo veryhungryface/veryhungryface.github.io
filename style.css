@@ -620,13 +620,29 @@ input:focus {
 }
 
 .battle-result.red-wins {
-    color: #ff4444; /* RED 승리 */
+    color: #ff4444;
+    font-weight: bold;
 }
 
 .battle-result.blue-wins {
-    color: #4444ff; /* BLUE 승리 */
+    color: #4444ff;
+    font-weight: bold;
 }
 
 .battle-result.draw {
-    color: #ffa726; /* 무승부 색상 */
+    color: #888;
+    font-weight: bold;
 }
+
+.red-score {
+    color: #ff4444;
+    font-weight: bold;
+    font-size: 3rem;
+}
+
+.blue-score {
+    color: #4444ff;
+    font-weight: bold;
+    font-size: 3rem;
+}
+
