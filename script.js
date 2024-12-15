@@ -340,9 +340,8 @@ function adjustFontSizes() {
         const totalCells = gameState.boardSize * gameState.boardSize;
         const allClicked = (gameState.clicked.size === totalCells);
         const unclickedPrimes = gameState.numbers.filter(n => gameState.primeMap[n] && !gameState.clicked.has(n));
-        const noUnclickedPrimes = (unclickedPrimes.length === 0);
 
-        if (allClicked || noUnclickedPrimes) {
+        if (allClicked) {
             setTimeout(() => {
                 handleNoMorePrimes();
             }, 1000); 
