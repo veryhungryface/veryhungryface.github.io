@@ -437,29 +437,47 @@ function adjustFontSizes() {
     }
     
     function startTimer() {
-        gameState.timeLeft = gameState.timeLimit;
+    gameState.timeLeft = gameState.timeLimit;
+    updateGameUI();
+
+    const timerBar = document.getElementById('timer-bar');
+    const timerDuration = gameState.timeLimit;
+
+    clearInterval(gameState.timer);
+
+    gameState.timer = setInterval(() => {
+        gameState.timeLeft--;
+
+        // 타이머 바 너비 업데이트
+        const percentage = (gameState.timeLeft / timerDuration) * 100;
+        timerBar.style.width = `${percentage}%`;
+
+        // 10초 이하일 때 바의 색상 변경
+        if (gameState.timeLeft <= 10) {
+            timerBar.style.backgroundColor = 'red';
+        } else {
+            timerBar.style.backgroundColor = 'white';
+        }
+
         updateGameUI();
-        
-        gameState.timer = setInterval(() => {
-            gameState.timeLeft--;
-            updateGameUI();
-            
-            if (gameState.timeLeft <= 0) {
-                if (gameState.mode === 'single') {
-                    gameState.hearts--;
-                    if (gameState.hearts <= 0) {
-                        endGame();
-                    } else {
-                        resetTimer();
-                    }
+
+        if (gameState.timeLeft <= 0) {
+            clearInterval(gameState.timer);
+            if (gameState.mode === 'single') {
+                gameState.hearts--;
+                if (gameState.hearts <= 0) {
+                    endGame();
                 } else {
-                    switchPlayer();
                     resetTimer();
                 }
-                updateGameUI();
+            } else {
+                switchPlayer();
+                resetTimer();
             }
-        }, 1000);
-    }
+            updateGameUI();
+        }
+    }, 1000);
+}
 
     function resetTimer() {
         if (gameState.timer) clearInterval(gameState.timer);
