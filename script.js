@@ -412,8 +412,8 @@ function adjustFontSizes() {
         if (gameState.mode === 'single') {
             gameElements.hearts.style.display = 'block';
             gameElements.roundInfo.style.display = 'none';
-            gameElements.playerAScore.style.display = 'none';
-            gameElements.playerBScore.style.display = 'none';
+            gameElements.score.style.display = 'block';
+            gameElements.score.textContent = `Score: ${gameState.score}`;
             gameElements.hearts.textContent = '❤️'.repeat(gameState.hearts);
         } else {
             gameElements.hearts.style.display = 'none';
