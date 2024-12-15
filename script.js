@@ -535,11 +535,12 @@ function adjustFontSizes() {
         }
 
         battleResult.textContent = resultText;
+        // 점수 표시 부분: 글자 크기 증가
         gameElements.finalScore.innerHTML = `
-    <span style="color: #ff4444; font-weight: bold;">${gameState.playerAScore}</span>
-    :
-    <span style="color: #4444ff; font-weight: bold;">${gameState.playerBScore}</span>
-`;
+            <span style="color: #ff4444; font-weight: bold; font-size: 3rem;">${gameState.playerAScore}</span>
+            :
+            <span style="color: #4444ff; font-weight: bold; font-size: 3rem;">${gameState.playerBScore}</span>
+        `;
     }
 
     showScreen('gameover');
