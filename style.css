@@ -227,8 +227,16 @@ button#start-game-button:hover {
     border-radius: 8px;
 }
 
-.hearts, .timer, .score-panel {
+.hearts, .timer {
     font-size: 1.5rem;
+}
+
+.score-panel {
+    display: flex;
+    justify-content: flex-end; /* 좌우로 간격 조정 */
+    align-items: center; /* 세로 가운데 정렬 */
+    gap: 1rem; /* 두 점수 사이 간격 */
+    font-size: 1.5rem; /* 점수 크기 조정 */
 }
 
 .board-container {
@@ -572,6 +580,7 @@ input:focus {
     font-weight: bold;
     font-size: 1.5em;
     text-shadow: 0 0 5px rgba(255, 68, 68, 0.3);
+    justify-content: flex-end;
 }
 
 .timer-bar-container {
