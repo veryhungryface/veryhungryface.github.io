@@ -502,6 +502,7 @@ function adjustFontSizes() {
     if (gameState.timer) clearInterval(gameState.timer);
 
     const finalScoreContainer = gameElements.finalScore.parentNode;
+    const highScoresContainer = document.querySelector('.high-scores-container');
 
     if (gameState.mode === 'single') {
         highScoresContainer.style.display = 'block';
@@ -510,7 +511,6 @@ function adjustFontSizes() {
         } else {
             finalScoreContainer.insertBefore(document.createTextNode('SCORE: '), gameElements.finalScore);
         }
-        
         gameElements.finalScore.textContent = gameState.score;
         checkAndSaveHighScore(gameState.score);
     } else {
@@ -535,11 +535,12 @@ function adjustFontSizes() {
         }
 
         battleResult.textContent = resultText;
-        // 점수 표시 부분: 글자 크기 증가
+
+        // 점수 표시 부분: CSS 클래스 활용
         gameElements.finalScore.innerHTML = `
-            <span style="color: #ff4444; font-weight: bold; font-size: 3rem;">${gameState.playerAScore}</span>
+            <span class="red-score">${gameState.playerAScore}</span>
             :
-            <span style="color: #4444ff; font-weight: bold; font-size: 3rem;">${gameState.playerBScore}</span>
+            <span class="blue-score">${gameState.playerBScore}</span>
         `;
     }
 
