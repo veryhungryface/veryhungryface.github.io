@@ -367,7 +367,9 @@ function adjustFontSizes() {
 
     function handleNoMorePrimes() {
         if (!gameState.active) return;
-
+        
+        resetTimerBar();
+            
         const unclickedPrimes = gameState.numbers.filter(num => 
             gameState.primeMap[num] && !gameState.clicked.has(num)
         );
