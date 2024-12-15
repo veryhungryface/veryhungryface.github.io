@@ -322,6 +322,10 @@ function adjustFontSizes() {
             cell.style.backgroundColor = '#cc0000';
             if (gameState.mode === 'single') {
                 gameState.hearts--;
+                if (gameState.hearts <= 0) {
+                    endGame();
+                    return; // endGame 호출 후 함수 종료
+                }
             } else {
                 switchPlayer();
             }
@@ -382,7 +386,10 @@ function adjustFontSizes() {
         } else {
             if (gameState.mode === 'single') {
                 gameState.hearts--;
-                if (gameState.hearts <= 0) endGame();
+                if (gameState.hearts <= 0) {
+                    endGame();
+                    return; // endGame 호출 후 함수 종료
+                 }
             } else {
                 switchPlayer();
             }
