@@ -415,6 +415,8 @@ function adjustFontSizes() {
             gameElements.score.style.display = 'block';
             gameElements.score.textContent = `Score: ${gameState.score}`;
             gameElements.hearts.textContent = '❤️'.repeat(gameState.hearts);
+            gameElements.playerAScore.style.display = 'none';
+            gameElements.playerBScore.style.display = 'none';
         } else {
             gameElements.hearts.style.display = 'none';
             gameElements.roundInfo.style.display = 'block';
