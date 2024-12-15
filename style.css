@@ -613,7 +613,7 @@ input:focus {
 }
 
 .battle-result {
-    font-size: 1.5rem; /* 결과 텍스트 크기 */
+    font-size: 2.5rem; /* 결과 텍스트 크기 */
     font-weight: bold; /* 볼드체 */
     text-align: center; /* 중앙 정렬 */
     margin: 1rem 0; /* 위아래 여백 */
