@@ -419,6 +419,7 @@ function adjustFontSizes() {
             gameElements.playerBScore.style.display = 'none';
         } else {
             gameElements.hearts.style.display = 'none';
+            gameElements.score.style.display = 'none';
             gameElements.roundInfo.style.display = 'block';
             gameElements.playerAScore.style.display = 'block';
             gameElements.playerBScore.style.display = 'block';
