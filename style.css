@@ -611,3 +611,22 @@ input:focus {
     transition: width 1s linear, background-color 0.3s ease; /* 너비와 색상 전환 효과 */
     border-radius: 5px;
 }
+
+.battle-result {
+    font-size: 1.5rem; /* 결과 텍스트 크기 */
+    font-weight: bold; /* 볼드체 */
+    text-align: center; /* 중앙 정렬 */
+    margin: 1rem 0; /* 위아래 여백 */
+}
+
+.battle-result.red-wins {
+    color: #ff4444; /* RED 승리 */
+}
+
+.battle-result.blue-wins {
+    color: #4444ff; /* BLUE 승리 */
+}
+
+.battle-result.draw {
+    color: #ffa726; /* 무승부 색상 */
+}
