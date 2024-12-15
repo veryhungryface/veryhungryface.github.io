@@ -498,47 +498,57 @@ function adjustFontSizes() {
     }
 
     function endGame() {
+    // 게임 상태를 비활성화
     gameState.active = false;
-    if (gameState.timer) clearInterval(gameState.timer);
+
+    // 타이머 클리어
+    if (gameState.timer) {
+        clearInterval(gameState.timer);
+        gameState.timer = null; // 타이머를 null로 초기화
+    }
 
     const finalScoreContainer = gameElements.finalScore.parentNode;
     const highScoresContainer = document.querySelector('.high-scores-container');
+    const battleResult = document.getElementById('battle-result');
 
     if (gameState.mode === 'single') {
-        battleResult.style.display = 'none';
+        // 싱글 모드
         highScoresContainer.style.display = 'block';
+        battleResult.style.display = 'none';
+
         if (finalScoreContainer.childNodes[0]) {
             finalScoreContainer.childNodes[0].textContent = 'SCORE: ';
         } else {
             finalScoreContainer.insertBefore(document.createTextNode('SCORE: '), gameElements.finalScore);
         }
+
         gameElements.finalScore.textContent = gameState.score;
         checkAndSaveHighScore(gameState.score);
     } else {
-        battleResult.style.display = 'block';
+        // 배틀 모드
         highScoresContainer.style.display = 'none';
+        battleResult.style.display = 'block';
+
         if (finalScoreContainer.childNodes[0]) {
             finalScoreContainer.childNodes[0].textContent = '';
         }
 
         let resultText = '';
-        const battleResult = document.getElementById('battle-result');
-        battleResult.className = 'battle-result'; // 기존 클래스 초기화
+        battleResult.className = 'battle-result';
 
         if (gameState.playerAScore > gameState.playerBScore) {
             resultText = "RED Wins!";
-            battleResult.classList.add('red-wins'); // RED 승리
+            battleResult.classList.add('red-wins');
         } else if (gameState.playerBScore > gameState.playerAScore) {
             resultText = "BLUE Wins!";
-            battleResult.classList.add('blue-wins'); // BLUE 승리
+            battleResult.classList.add('blue-wins');
         } else {
             resultText = "Draw!";
-            battleResult.classList.add('draw'); // 무승부
+            battleResult.classList.add('draw');
         }
 
         battleResult.textContent = resultText;
 
-        // 점수 표시 부분: CSS 클래스 활용
         gameElements.finalScore.innerHTML = `
             <span class="red-score">${gameState.playerAScore}</span>
             :
@@ -546,6 +556,7 @@ function adjustFontSizes() {
         `;
     }
 
+    // 게임 오버 화면으로 전환
     showScreen('gameover');
 }
 
