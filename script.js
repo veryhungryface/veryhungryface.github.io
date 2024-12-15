@@ -313,6 +313,13 @@ function adjustFontSizes() {
             cell.style.backgroundColor = '#0066cc';
             if (gameState.mode === 'single') {
                 gameState.score += 10;
+                
+                // 타이머 초기화 (바 가득 채우기)
+                const timerBar = document.getElementById('timer-bar');
+                gameState.timeLeft = gameState.timeLimit; // 남은 시간을 초기화
+                timerBar.style.width = '100%'; // 바 가득 채우기
+                timerBar.style.backgroundColor = 'white'; // 색상 초기화
+ 
             } else {
                 if (gameState.currentPlayer === 'A') {
                     gameState.playerAScore += 10;
