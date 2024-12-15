@@ -533,7 +533,11 @@ function adjustFontSizes() {
         }
 
         battleResult.textContent = resultText;
-        gameElements.finalScore.textContent = `RED: ${gameState.playerAScore} BLUE: ${gameState.playerBScore}`;
+        gameElements.finalScore.innerHTML = `
+    <span style="color: #ff4444; font-weight: bold;">${gameState.playerAScore}</span>
+    :
+    <span style="color: #4444ff; font-weight: bold;">${gameState.playerBScore}</span>
+`;
     }
 
     showScreen('gameover');
