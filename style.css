@@ -257,7 +257,6 @@ button#start-game-button:hover {
 }
 
 .cell {
-    font-size: clamp(0.5rem, 4vw, 4rem);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -267,6 +266,7 @@ button#start-game-button:hover {
     border-radius: 4px;
     user-select: none;
     transition: all 0.3s ease;
+    /* font-size: 제거 혹은 매우 작은 값으로 */
 }
 
 .cell:hover {
