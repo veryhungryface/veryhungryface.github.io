@@ -231,6 +231,16 @@ button#start-game-button:hover {
     font-size: 1.5rem;
 }
 
+.round-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 중앙 정렬 */
+    font-size: 1.2rem;
+    font-weight: bold; /* 볼드체 적용 */
+    color: #fff;
+    text-align: center;
+}
+
 .score-panel {
     display: flex;
     justify-content: flex-end; /* 좌우로 간격 조정 */
