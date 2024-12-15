@@ -501,12 +501,17 @@ function adjustFontSizes() {
     // 게임 상태를 비활성화
     gameState.active = false;
 
+    console.log('endGame 호출됨');
+console.log('gameState:', gameState);
+console.log('active screen:', document.querySelector('.screen.active'));
+
     // 타이머 클리어
     if (gameState.timer) {
         clearInterval(gameState.timer);
         gameState.timer = null; // 타이머를 null로 초기화
     }
-
+    console.log('Timer:', gameState.timer);
+    
     const finalScoreContainer = gameElements.finalScore.parentNode;
     const highScoresContainer = document.querySelector('.high-scores-container');
     const battleResult = document.getElementById('battle-result');
