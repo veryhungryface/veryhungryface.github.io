@@ -436,7 +436,7 @@ function adjustFontSizes() {
             gameElements.roundInfo.style.display = 'block';
             gameElements.playerAScore.style.display = 'block';
             gameElements.playerBScore.style.display = 'block';
-            gameElements.roundInfo.textContent = `Round ${gameState.currentRound}/${gameState.rounds}`;
+            gameElements.roundInfo.innerHTML = `<strong>Round</strong><br><strong>${gameState.currentRound}/${gameState.rounds}</strong>`;
             
             gameElements.playerAScore.textContent = `RED: ${gameState.playerAScore}`;
             gameElements.playerBScore.textContent = `BLUE: ${gameState.playerBScore}`;
