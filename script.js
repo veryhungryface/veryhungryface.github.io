@@ -505,6 +505,7 @@ function adjustFontSizes() {
     const highScoresContainer = document.querySelector('.high-scores-container');
 
     if (gameState.mode === 'single') {
+        battleResult.style.display = 'none';
         highScoresContainer.style.display = 'block';
         if (finalScoreContainer.childNodes[0]) {
             finalScoreContainer.childNodes[0].textContent = 'SCORE: ';
@@ -514,6 +515,7 @@ function adjustFontSizes() {
         gameElements.finalScore.textContent = gameState.score;
         checkAndSaveHighScore(gameState.score);
     } else {
+        battleResult.style.display = 'block';
         highScoresContainer.style.display = 'none';
         if (finalScoreContainer.childNodes[0]) {
             finalScoreContainer.childNodes[0].textContent = '';
