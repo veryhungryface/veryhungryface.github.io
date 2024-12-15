@@ -262,6 +262,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const cell = document.createElement('div');
         cell.className = 'cell';
         cell.textContent = num;
+
+        // 이벤트 리스너 추가
+        cell.addEventListener('click', () => handleCellClick(cell, num));
+
         board.appendChild(cell);
     });
 
@@ -270,7 +274,6 @@ document.addEventListener('DOMContentLoaded', () => {
         board.classList.add(`player-${gameState.currentPlayer.toLowerCase()}-turn`);
     }
 
-    // 화면에 렌더링이 완료된 뒤 폰트 크기 조정
     requestAnimationFrame(() => {
         adjustFontSizes();
     });
