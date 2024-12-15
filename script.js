@@ -504,38 +504,35 @@ function adjustFontSizes() {
     const finalScoreContainer = gameElements.finalScore.parentNode;
 
     if (gameState.mode === 'single') {
-        // 싱글 모드: 배틀 결과 숨기기
-        document.getElementById('battle-result').style.display = 'none';
-
         if (finalScoreContainer.childNodes[0]) {
             finalScoreContainer.childNodes[0].textContent = 'SCORE: ';
         } else {
             finalScoreContainer.insertBefore(document.createTextNode('SCORE: '), gameElements.finalScore);
         }
+        
         gameElements.finalScore.textContent = gameState.score;
         checkAndSaveHighScore(gameState.score);
-    } else if (gameState.mode === 'battle') {
-        // 배틀 모드: 배틀 결과 표시
-        document.getElementById('battle-result').style.display = 'block';
-
+    } else {
         if (finalScoreContainer.childNodes[0]) {
             finalScoreContainer.childNodes[0].textContent = '';
         }
 
-        let resultText;
+        let resultText = '';
+        const battleResult = document.getElementById('battle-result');
+        battleResult.className = 'battle-result'; // 기존 클래스 초기화
+
         if (gameState.playerAScore > gameState.playerBScore) {
             resultText = "RED Wins!";
+            battleResult.classList.add('red-wins'); // RED 승리
         } else if (gameState.playerBScore > gameState.playerAScore) {
             resultText = "BLUE Wins!";
+            battleResult.classList.add('blue-wins'); // BLUE 승리
         } else {
             resultText = "Draw!";
+            battleResult.classList.add('draw'); // 무승부
         }
 
-        const battleResult = document.getElementById('battle-result');
         battleResult.textContent = resultText;
-        battleResult.className = 'battle-result ' + 
-            (resultText === "Draw!" ? 'draw' : 'winner');
-
         gameElements.finalScore.textContent = `RED: ${gameState.playerAScore} BLUE: ${gameState.playerBScore}`;
     }
 
