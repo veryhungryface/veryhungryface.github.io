@@ -253,24 +253,34 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function createBoard() {
-        const board = document.getElementById('game-board');
-        board.innerHTML = '';
-        board.style.gridTemplateColumns = `repeat(${gameState.boardSize}, 1fr)`;
-        board.style.gridTemplateRows = `repeat(${gameState.boardSize}, 1fr)`;
+    const board = document.getElementById('game-board');
+    board.innerHTML = '';
+    board.style.gridTemplateColumns = `repeat(${gameState.boardSize}, 1fr)`;
+    board.style.gridTemplateRows = `repeat(${gameState.boardSize}, 1fr)`;
 
-        gameState.numbers.forEach(num => {
-            const cell = document.createElement('div');
-            cell.className = 'cell';
-            cell.textContent = num;
-            cell.addEventListener('click', () => handleCellClick(cell, num));
-            board.appendChild(cell);
-        });
+    gameState.numbers.forEach(num => {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.textContent = num;
+        board.appendChild(cell); // 먼저 DOM에 추가
 
-        if (gameState.mode === 'battle') {
-            board.classList.remove('player-a-turn', 'player-b-turn');
-            board.classList.add(`player-${gameState.currentPlayer.toLowerCase()}-turn`);
-        }
+        // 셀의 실제 너비를 가져오기 위해 DOM에 추가한 뒤 측정
+        const cellWidth = cell.offsetWidth;
+        const digitCount = num.toString().length;
+
+        // 셀 너비를 숫자 자릿수로 나누어 각 글자당 너비 확보
+        // 약간의 여유(0.8)를 곱해 너무 꽉 차지 않도록 합니다.
+        const fontSize = Math.floor((cellWidth / digitCount) * 0.8);
+        cell.style.fontSize = fontSize + 'px';
+
+        cell.addEventListener('click', () => handleCellClick(cell, num));
+    });
+
+    if (gameState.mode === 'battle') {
+        board.classList.remove('player-a-turn', 'player-b-turn');
+        board.classList.add(`player-${gameState.currentPlayer.toLowerCase()}-turn`);
     }
+}
 
     function handleCellClick(cell, num) {
         if (!gameState.active || gameState.clicked.has(num)) return;
