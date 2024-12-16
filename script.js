@@ -318,7 +318,7 @@ function adjustFontSizes() {
         resetTimerBar();
         
         if (gameState.primeMap[num]) {
-            cell.style.backgroundColor = '#0066cc';
+            cell.style.backgroundColor = '#FFD700';
             if (gameState.mode === 'single') {
                 gameState.score += 10;    
  
@@ -331,7 +331,7 @@ function adjustFontSizes() {
             }
             cell.classList.add('found-prime');
         } else {
-            cell.style.backgroundColor = '#cc0000';
+            cell.style.backgroundColor = '#808080';
             if (gameState.mode === 'single') {
                 gameState.hearts--;
                 if (gameState.hearts <= 0) {
