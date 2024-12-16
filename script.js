@@ -353,7 +353,7 @@ function adjustFontSizes() {
         if (allClicked) {
             setTimeout(() => {
                 handleNoMorePrimes();
-            }, 1000); 
+            }, 200); 
         }
     }
 
