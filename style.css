@@ -575,12 +575,14 @@ input:focus {
 /* 점수 패널 스타일 - 더 구체적인 선택자 사용 */
 #game-screen .info-panel .score-panel div#player-a-score {
     color: #ff4444 !important;
+    font-size: 3rem;
     font-weight: bold;
     text-shadow: 0 0 5px rgba(255, 68, 68, 0.3);
 }
 
 #game-screen .info-panel .score-panel div#player-b-score {
     color: #4444ff !important;
+    font-size: 3rem;
     font-weight: bold;
     text-shadow: 0 0 5px rgba(68, 68, 255, 0.3);
 }
